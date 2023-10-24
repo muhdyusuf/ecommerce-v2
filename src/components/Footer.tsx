@@ -8,10 +8,10 @@ interface FooterProps {
 const Footer: FC<FooterProps> = ({}) => {
   return (
    <footer
-    className='hidden md:block text-sm bg-slate-300 py-4'
+    className='hidden md:block text-sm bg-slate-300 '
    >
      <div
-        className='md:container flex flex-wrap justify-between gap-4'
+        className='md:container flex flex-wrap justify-between gap-4 py-4'
      >
         <div
             className='flex flex-col gap-4'
@@ -137,17 +137,17 @@ const Footer: FC<FooterProps> = ({}) => {
             </ul>
         </div>
 
-
-     </div>
-     <div
+        <div
         className='w-full'
      >
-        <p
-
-        >
+        <p>
             &copy;2023 MockECommerce, Inc. All right reserved
         </p>
      </div>
+
+
+     </div>
+     
    </footer>
    )
 }

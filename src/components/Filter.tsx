@@ -1,19 +1,17 @@
 'use client'
-import { useRouter,useSearchParams } from 'next/navigation'
-import { FC } from 'react'
+import {useRouter,useSearchParams,usePathname} from 'next/navigation'
+import { FC} from 'react'
 import { z } from "Zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from './ui/input';
+
 import { Button } from './ui/button';
 import qs from 'querystring'
 import PriceRangeInput from './PriceRangeInput';
 import RatingInput from './RatingInput';
-import { useRouter as usePagesRouter } from 'next/router';
 
-interface FilterProps {
-  
-}
+
+
  const filterSchema=z.object({
     rating:z.number().optional(),
     priceRange:z.object({
@@ -27,75 +25,132 @@ interface FilterProps {
         message:"range is invalid",
     }).optional()
 })
+type FilterSchema=z.infer<typeof filterSchema>
 
-
+interface FilterProps {
+  
+}
 
 
 
 const Filter: FC<FilterProps> = ({}) => {
-    const pagesRouter=usePagesRouter()
+
     const router=useRouter()
     const searchParams=useSearchParams()
+
     
-    type FilterSchema=z.infer<typeof filterSchema>
-    const {
-        
-        watch,
+   
+    let urlFilterQuery
+
+      const filterQuery:{[key:string]:any}={}
+  
+      searchParams.forEach((value:string,key:string)=>{
+        if(parseInt(value)){
+          filterQuery[key]=parseInt(value)
+        }
+   
+      })
+      const {minPrice,maxPrice,...rest}=filterQuery
+      if(minPrice){
+        urlFilterQuery={
+          priceRange:{
+            minPrice,
+            maxPrice
+          },
+          ...rest
+        }
+      }
+      else{
+        urlFilterQuery={...rest}
+      }
+    
+
+    
+
+
+  
+    const {    
         control,
-        register,
+        setValue,
         handleSubmit,
+        reset,
+        watch,
         formState: { errors },
       } = useForm<FilterSchema>({
         resolver: zodResolver(filterSchema),
-      });
+        defaultValues:urlFilterQuery,
+        values:{
+          priceRange:{
+            maxPrice:undefined,
+            minPrice:undefined
+          },
+          rating:undefined
+        },
       
-    console.log(errors)
+      });
+
+   
     
     const onSubmit:SubmitHandler<FilterSchema>=(data)=>{
-      if(Object.values(data).every(value=>!value))return
+   
+      const search=searchParams.get("search")
+      const url=window.location.origin
+      
+      const {priceRange,...rest}=data
+      const flatennedData={
+        ...priceRange,...rest
+      }
 
-        const current=qs.parse(searchParams.toString())
-
-        const query={
-            ...current,
-            ...data,
-            minPrice:data?.priceRange?.minPrice||null,
-            maxPrice:data?.priceRange?.maxPrice||null
-        }
-        query.hasOwnProperty("priceRange")&&delete query.priceRange
-        console.log(query)
+   
+     if(Object.values(flatennedData).map((value)=>{
+       if(typeof value==="number")return true
+        if(!value)return false
+        return true
+      }).every(value=>value===false))return(router.push(`${url}/shop?search=${search}`))
 
      
-      
 
+     const filteredQueryParams = Object.fromEntries(
+      Object.entries(flatennedData).filter(([_,value]) => value !== undefined)
+    );
 
-       
-      }
+      const query=qs.stringify(filteredQueryParams)
+
     
+      router.push(`${url}/shop?search=${search}&${query}`)
       
+      
+      }
+  
       function resetFilter(){ 
-        console.log(filterSchema.parse({
-            minPrice:"sada",
-            maxPrice:"asda"
-        }))
+        reset()
         router.push(`/shop?search=${searchParams.get("search")}`)
       }
       
-   
+
      
       
       
 
   return (
-   <div
-    className=' text-black '
-   >
+   
      <form
-         className='flex flex-col'
+         className='flex flex-col gap-8 '
          onSubmit={handleSubmit(onSubmit)}
          onReset={resetFilter}
      >
-        {errors.priceRange&&<span>{errors.priceRange.message}</span>}
+        <legend
+          className='text-lg'
+        >
+          Search Filter
+        </legend>
+        <fieldset
+          className='flex flex-col gap-2'
+        >
+          <label>
+            Price Range
+          </label>
+          {errors.priceRange&&<span>{errors.priceRange.message}</span>}
          <Controller
             name="priceRange"
             control={control}
@@ -103,34 +158,52 @@ const Filter: FC<FilterProps> = ({}) => {
               <PriceRangeInput
                 value={{...value}}
                 onChange={onChange}
+                watch={()=>watch("priceRange")}
               />  
             )}
           /> 
+        </fieldset>
 
-          <label htmlFor="rating">
-            <select name="" id=""></select>
-
+        <fieldset>
+          <label>
+              Rating
           </label>
           <Controller
             name="rating"
             control={control}
-            render={({field:{onChange}}) => (
+            render={({field:{onChange,value}}) => (
               <RatingInput
                 onChange={onChange}
+                value={value}
+                watch={()=>watch("rating")}
               />  
-            )}
-          /> 
-      <Button
-        type='submit'
-        variant="secondary"
+              )}
+              /> 
+        </fieldset>
+       
+      <fieldset
+       className='flex flex-col gap-2'
       >
-        123
-      </Button>
+        <Button
+          type='submit'
+          >
+          Apply Filter
+        </Button>
+
+        <Button
+          type='reset'
+          variant={"outline"}
+          
+          >
+          Reset
+        </Button>
+      </fieldset>
      
 
 
      </form>
-   </div>)
+  
+   )
 }
 
 export default Filter

@@ -1,5 +1,7 @@
 
 import Filter from '@/components/Filter'
+import ServerFilter from '@/components/ServerFilter'
+import Sorter from '@/components/Sorter'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { FC } from 'react'
@@ -19,13 +21,14 @@ interface IProduct{
 
 interface pageProps {
     searchParams:string
+    params:string
 }
 
-const page: FC<pageProps> = async ({searchParams}) => {
-    const {search}=searchParams
-    console.log(search,searchParams)
+const page: FC<pageProps> = async ({searchParams,params}) => {
+    const query=searchParams
 
-
+    
+    
 
     async function getProducts(){
       let data:IProduct[]|[]=[]
@@ -39,32 +42,48 @@ const page: FC<pageProps> = async ({searchParams}) => {
   
   return (
    <main
-    className='flex md:container w-full pt-32'
+    className='flex md:container h-[220vh]'
    >
-     <aside
-        className='w-36 bg-bue-100 h-screen '
-     >
-      <Filter/>
-        
-     </aside>
-     <div
-      className='grid grid-cols-4 gap-8'
-     >
-      {data.map((product:IProduct)=>(
-        <div
-          className='p-4 bg-blue-100'
-        >
-          <Image
-            width={1000}
-            height={1000}
-            alt='image'
-            src={product.image}
-          />
-          
-        </div>
-      ))}
+    <section
+      className='grid grid-cols-[250px,1fr]'
+    >
+      <aside
+          className=''
+          >
+        <Filter />
+        {/* <ServerFilter searchParams={searchParams} params={params}/> */}
 
-     </div>
+          
+      </aside>
+      <div
+        className='overflow-visible' 
+      >
+        <Sorter/>
+        <select name="" id="">
+          <option value="asda">
+            asdasda
+          </option>
+        </select>
+      </div>
+
+        <div
+          className='grid grid-cols-4 gap-8'
+          >
+          {data.map((product:IProduct)=>(
+            <div
+              className='p-4'
+            >
+              <Image
+                width={1000}
+                height={1000}
+                alt='image'
+                src={product.image}
+                />
+              
+            </div>
+          ))}
+        </div>
+      </section>
    </main>
    )
 }

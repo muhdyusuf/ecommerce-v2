@@ -1,9 +1,10 @@
 import page from '@/app/cart/page'
 import { type } from 'os'
-import { FC, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { Input} from './ui/input'
 import { Button } from './ui/button'
 import { Minus } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
 
 type InputValue={
     minPrice?:number,
@@ -13,17 +14,20 @@ type InputValue={
 interface PriceRangeInputProps {
   onChange:({}:InputValue)=>void,
   value:InputValue,
+  watch:(val:string)=>void
 
 }
 
 
 
-const PriceRangeInput: FC<PriceRangeInputProps> = ({value,onChange})=>{
-    const [inputValue, setInputValue] = useState<InputValue>({
-        minPrice:undefined,
-        maxPrice:undefined
-    })
- 
+const PriceRangeInput: FC<PriceRangeInputProps> = ({value,onChange,watch})=>{
+    const [inputValue, setInputValue] = useState<InputValue>({...value})
+
+    useEffect(()=>{
+        setInputValue({...value})
+    },[watch])
+  
+
   return (
     <div
         className='grid grid-cols-[5fr,1rem,5fr] gap-y-2'
@@ -61,6 +65,7 @@ const PriceRangeInput: FC<PriceRangeInputProps> = ({value,onChange})=>{
     />
     <Button
         type='button'
+        variant={"outline"}
         className='col-span-full'
         onClick={(e)=>{
         return onChange(inputValue)

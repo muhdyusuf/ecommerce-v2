@@ -67,6 +67,8 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
             type="submit"
             variant={"ghost"}
             className={cn("p-2 m-0")}
+            id='submit-search-button'
+            aria-label='Aria Submit Search Button'
         >
             <Search
                 className='h-full w-auto aspect-square text-slate-400'
