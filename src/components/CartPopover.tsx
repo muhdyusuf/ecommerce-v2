@@ -6,7 +6,7 @@ import { Button } from './ui/button'
 import { cn } from '@/lib/utils'
 import { Popover, PopoverTrigger } from './ui/popover'
 import { PopoverClose, PopoverContent } from '@radix-ui/react-popover'
-import { useCart } from '@/app/context/cartContext'
+import { CartProvider, useCart } from '@/app/context/cartContext'
 import { CART_ACTION } from '@/app/context/contextAction'
 
 interface CartProps {
@@ -32,6 +32,8 @@ const {cart,dispatch}=useCart()
             
         }
     },[])
+
+    console.log(cart)
 
 
 
@@ -83,9 +85,23 @@ const {cart,dispatch}=useCart()
         <PopoverContent
             className='bg-slate-100 p-4 rounded-md'
         >
-            {cart.map(product=><p
+            <ul>
+            {cart.slice(-5).reverse().map(product=>(
+                <li
                 key={crypto.randomUUID()}
-            >{product.name}</p>)}
+                >
+                    {product.name||product.title}
+                </li>
+            
+            ))}
+            </ul>
+            <div>
+                <Link
+                    href={"/cart"}
+                >
+                    see more
+                </Link>
+            </div>
        
         </PopoverContent>
     </Popover>

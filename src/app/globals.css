@@ -6,7 +6,11 @@ body{
     @apply flex flex-col justify-between gap-4
 }
 @tailwind components;
+    section,main{
+        @apply md:container
+    }
 @tailwind utilities;
+
 
 
 footer a{

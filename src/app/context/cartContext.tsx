@@ -14,9 +14,30 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 
 const cartReducer = (state: CartItem[], action: CartAction) => {
+  
+  let _action=action 
+
+
+
+
+
   switch (action.type) {
-    case CART_ACTION.ADD_ITEM:
-      return [...state, action.payload];
+    case CART_ACTION.ADD_ITEM:{
+      let addedCartItem
+
+      if(state.some(cartItem=>cartItem.id===action.payload.id)){
+        addedCartItem = state.map(cartItem => {
+          if (cartItem.id === action.payload.id) {
+            return { ...cartItem,quantity:cartItem.quantity+=action.payload.quantity};
+          }
+          return cartItem;
+        });
+      }
+      else{
+        addedCartItem=[...state,action.payload]
+      }
+      return [...addedCartItem];
+    }
 
     case CART_ACTION.UPDATE_ITEM:{
       const updatedCartItem = state.map(cartItem => {
@@ -30,16 +51,16 @@ const cartReducer = (state: CartItem[], action: CartAction) => {
 
     case CART_ACTION.ADD_ITEM_QUANTITY:{
       const updatedCartItem = state.map(cartItem => {
-        if (cartItem.id === action.payload.id) {
-          return { ...cartItem,quantity:cartItem.quantity+=action.payload.quantity};
-        }
-        return cartItem;
-      });
-
+          if (cartItem.id === action.payload.id) {
+            return { ...cartItem,quantity:cartItem.quantity+=action.payload.quantity};
+          }
+          return cartItem;
+        });
+      
       return [...updatedCartItem];
     }
 
-    case CART_ACTION.ADD_ITEM_QUANTITY:{
+    case CART_ACTION.DEDUCT_ITEM_QUANTITY:{
       const updatedCartItem = state.map(cartItem => {
         if (cartItem.id === action.payload.id) {
           return { ...cartItem,quantity:cartItem.quantity-=action.payload.quantity};
@@ -66,7 +87,7 @@ const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       const cartList:CartList=JSON.parse(storedCart)
-
+        console.log(cartList)
       cartList.map(cartItem=>{
         dispatch({ type:CART_ACTION.ADD_ITEM, payload:cartItem});
       })
@@ -75,7 +96,9 @@ const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+   
+      localStorage.setItem('cart', JSON.stringify(cart));
+  
   }, [cart]);
 
 

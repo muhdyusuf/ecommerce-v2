@@ -75,6 +75,7 @@ const Filter: FC<FilterProps> = ({}) => {
         handleSubmit,
         reset,
         watch,
+        trigger,
         formState: { errors },
       } = useForm<FilterSchema>({
         resolver: zodResolver(filterSchema),
@@ -126,6 +127,8 @@ const Filter: FC<FilterProps> = ({}) => {
         reset()
         router.push(`/shop?search=${searchParams.get("search")}`)
       }
+
+      console.log(errors,watch("priceRange"))
       
 
      
@@ -159,11 +162,12 @@ const Filter: FC<FilterProps> = ({}) => {
                 value={{...value}}
                 onChange={onChange}
                 watch={()=>watch("priceRange")}
+                trigger={()=>{trigger("priceRange")}}
               />  
             )}
           /> 
         </fieldset>
-
+       
         <fieldset>
           <label>
               Rating

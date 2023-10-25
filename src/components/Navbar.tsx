@@ -1,6 +1,6 @@
 'use client'
 import { FC } from 'react'
-import Cart from './Cart'
+import Cart from './CartPopover'
 import SearchInput from './SearchInput'
 import Link from 'next/link'
 import { CartProvider } from '@/app/context/cartContext'

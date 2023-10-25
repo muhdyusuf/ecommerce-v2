@@ -1,5 +1,6 @@
 interface CartItem extends Product{
-    quantity:number
+    quantity:number,
+    selected?:boolean
 }
 
 type CartList=CartItem[]
