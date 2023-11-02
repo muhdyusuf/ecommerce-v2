@@ -8,7 +8,7 @@ interface pageProps {
   params:string
 }
 
-const page: FC<pageProps> = ({searchParams,params}) => {
+const page: FC<pageProps> = async({searchParams,params}) => {
   const isSignedIn=false
 
 

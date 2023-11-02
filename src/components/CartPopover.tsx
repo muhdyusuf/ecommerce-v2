@@ -1,13 +1,13 @@
 'use client'
-import { ShoppingCart } from 'lucide-react'
+import { ShoppingBag, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import { FC,useEffect,useState } from 'react'
 import { Button } from './ui/button'
 import { cn } from '@/lib/utils'
 import { Popover, PopoverTrigger } from './ui/popover'
 import { PopoverClose, PopoverContent } from '@radix-ui/react-popover'
-import { CartProvider, useCart } from '@/app/context/cartContext'
-import { CART_ACTION } from '@/app/context/contextAction'
+import { CartProvider, useCart } from '@/context/cartContext'
+import { CART_ACTION } from '@/context/contextAction'
 
 interface CartProps {
   
@@ -15,6 +15,7 @@ interface CartProps {
 
 const Cart: FC<CartProps> = ({}) => {
 const {cart,dispatch}=useCart()
+const url=process.env.NEXT_PUBLIC_APP_URL
     
     useEffect(()=>{
         if(cart.length===0){
@@ -33,7 +34,7 @@ const {cart,dispatch}=useCart()
         }
     },[])
 
-    console.log(cart)
+
 
 
 
@@ -51,7 +52,7 @@ const {cart,dispatch}=useCart()
         >
             {cart.length>0?cart.length:null}
         </span>
-         <ShoppingCart
+         <ShoppingBag
             strokeWidth={1}
             className='w-8 h-auto aspect-square'
          />
@@ -75,7 +76,7 @@ const {cart,dispatch}=useCart()
                     >
                     {cart.length>0?cart.length:null}
                 </span>
-                <ShoppingCart
+                <ShoppingBag
                     strokeWidth={2}
                     className='w-6 h-auto aspect-square'
                     />
@@ -86,7 +87,7 @@ const {cart,dispatch}=useCart()
             className='bg-slate-100 p-4 rounded-md'
         >
             <ul>
-            {cart.slice(-5).reverse().map(product=>(
+            {cart.slice(0,4).map(product=>(
                 <li
                 key={crypto.randomUUID()}
                 >
@@ -97,7 +98,7 @@ const {cart,dispatch}=useCart()
             </ul>
             <div>
                 <Link
-                    href={"/cart"}
+                    href={`${url}/cart`}
                 >
                     see more
                 </Link>

@@ -1,6 +1,6 @@
 'use client'
-import { useCart } from '@/app/context/cartContext'
-import { FC } from 'react'
+import { useCart } from '@/context/cartContext'
+import { ChangeEvent, FC } from 'react'
 
 //ui
 import {
@@ -13,6 +13,7 @@ import {
     TableRow,
   } from "@/components/ui/table"
 import CartTableRow from './CartTableRow'
+import { CART_ACTION } from '@/context/contextAction'
   
 
 interface ClientCartListProps {
@@ -21,7 +22,25 @@ interface ClientCartListProps {
 
 const ClientCartList: FC<ClientCartListProps> = ({}) => {
     const {cart,dispatch}=useCart()
-    console.log(cart)
+    
+    function handleAllSelected(e:ChangeEvent<HTMLInputElement>){
+        const isAllSelected=e.target.checked
+        
+        if(isAllSelected){
+            cart.map(cartItem=>dispatch({
+                type:CART_ACTION.UPDATE_ITEM,
+                payload:{...cartItem,selected:true}
+            }))
+        }
+        else{
+            cart.map(cartItem=>dispatch({
+                type:CART_ACTION.UPDATE_ITEM,
+                payload:{...cartItem,selected:false}
+            }))
+        }
+        console.log(isAllSelected,cart)
+    }
+   
   return (
     <Table
     >
@@ -29,7 +48,12 @@ const ClientCartList: FC<ClientCartListProps> = ({}) => {
             <TableRow
             >
                 <TableHead className="w-4">
-                    <input type="checkbox" name="" id="" />   
+                    <input 
+                        type="checkbox" 
+                        name="select all cart item" 
+                        id="cart select all"
+                        onChange={handleAllSelected} 
+                    />   
                 </TableHead>
                 <TableHead>Product</TableHead>
                 <TableHead
@@ -40,8 +64,10 @@ const ClientCartList: FC<ClientCartListProps> = ({}) => {
             </TableRow>
         </TableHeader>
         <TableBody> 
-            {cart.reverse().map(cartItem=>(
-               <CartTableRow {...cartItem}/>
+            {cart.map(cartItem=>(
+               <CartTableRow 
+                key={cartItem.id}
+                {...cartItem}/>
             ))}
         </TableBody>
     </Table>

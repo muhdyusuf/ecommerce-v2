@@ -1,5 +1,6 @@
 'use server'
 import { FC } from 'react'
+import { NextResponse } from 'next/server'
 
 interface pageProps {
     searchParams:{
@@ -8,10 +9,13 @@ interface pageProps {
     }
 }
 
-const page: FC<pageProps> = async ({searchParams}) => {
 
+
+const page: FC<pageProps> = async ({searchParams}) => {
+   
     console.log(searchParams)
     const {cartItem,quantity}=searchParams
+
   
     let product:CartItem|undefined
 

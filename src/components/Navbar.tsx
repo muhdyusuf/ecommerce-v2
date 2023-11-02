@@ -3,7 +3,7 @@ import { FC } from 'react'
 import Cart from './CartPopover'
 import SearchInput from './SearchInput'
 import Link from 'next/link'
-import { CartProvider } from '@/app/context/cartContext'
+import { CartProvider } from '@/context/cartContext'
 
 interface NavbarProps {
   

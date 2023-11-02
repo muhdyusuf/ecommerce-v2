@@ -37,6 +37,7 @@ const Filter: FC<FilterProps> = ({}) => {
 
     const router=useRouter()
     const searchParams=useSearchParams()
+    const url=process.env.NEXT_PUBLIC_APP_URL
 
     
    
@@ -95,8 +96,8 @@ const Filter: FC<FilterProps> = ({}) => {
     const onSubmit:SubmitHandler<FilterSchema>=(data)=>{
    
       const search=searchParams.get("search")
-      const url=window.location.origin
-      
+  
+    
       const {priceRange,...rest}=data
       const flatennedData={
         ...priceRange,...rest
@@ -125,7 +126,7 @@ const Filter: FC<FilterProps> = ({}) => {
   
       function resetFilter(){ 
         reset()
-        router.push(`/shop?search=${searchParams.get("search")}`)
+        router.push(`${url}/shop?search=${searchParams.get("search")}`)
       }
 
       console.log(errors,watch("priceRange"))

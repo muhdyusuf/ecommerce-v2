@@ -1,11 +1,37 @@
-import { FC, useState } from 'react'
+import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { TableCell, TableRow } from './ui/table'
-import QuantityInput from './QuantityInput'
+import {QuantityInput} from './QuantityInput'
+import Link from 'next/link'
+import { useCart } from '@/context/cartContext'
+import { CART_ACTION } from '@/context/contextAction'
 
 interface CartTableRowProps extends CartItem {}
 
 const CartTableRow: FC<CartTableRowProps> = (cartItem) => {
- const [quantity, setQuantity] = useState<number>(cartItem.quantity||1)
+const url=process.env.NEXT_PUBLIC_APP_URL
+
+
+ const {dispatch}=useCart()
+ 
+function handleSetQuantity(val:number){
+    console.log(val,"hello")
+   dispatch({
+        type:CART_ACTION.UPDATE_ITEM,
+        payload:{...cartItem,quantity:val}
+    })
+}
+function handleSetSelected(e:ChangeEvent<HTMLInputElement>){
+
+    const isSelected=e.target.checked
+    dispatch({
+        type:CART_ACTION.UPDATE_ITEM,
+        payload:{...cartItem,selected:isSelected}
+    })
+}
+
+
+
+    
   return (
     <TableRow>
         <TableCell className="font-medium">
@@ -14,10 +40,15 @@ const CartTableRow: FC<CartTableRowProps> = (cartItem) => {
                 name=""
                 id=""
                 defaultChecked={cartItem.selected||false}
-                />   
+                onChange={handleSetSelected}
+            />   
         </TableCell>
         <TableCell>
-            {cartItem.name||cartItem.title}
+            <Link
+                href={`${url}/product/${cartItem.id}`}
+            >
+                {cartItem.name||cartItem.title}
+            </Link>
         </TableCell>
         <TableCell
             className='hidden md:block'
@@ -25,13 +56,16 @@ const CartTableRow: FC<CartTableRowProps> = (cartItem) => {
             {cartItem.price}
         </TableCell>
         <TableCell
-            className='w-32 p-0'
+            className='w-32 p-0 overflow-hidden'
         >
             <QuantityInput
-                 value={quantity} 
-                 setValue={setQuantity}
+                onChange={handleSetQuantity}
+                defaultValue={cartItem.quantity}
                 className='w-full grid grid-cols-[1fr,2fr,1fr] gap-1 items-center'
-            />
+            >
+                
+            </QuantityInput>
+       
         </TableCell>
         <TableCell 
             className="text-right"

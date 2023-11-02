@@ -30,7 +30,7 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
 
     function onSubmit(e:React.FormEvent){
         e.preventDefault()
-        router.push(`/shop?search=${inputValue}`)
+        router.push(`${process.env.NEXT_PUBLIC_APP_URL}/shop?search=${inputValue}`)
     }
  
 

@@ -1,6 +1,6 @@
 'use client'
-import { useCart } from '@/app/context/cartContext'
-import { CART_ACTION } from '@/app/context/contextAction'
+import { useCart } from '@/context/cartContext'
+import { CART_ACTION } from '@/context/contextAction'
 import { FC, useEffect, useState } from 'react'
 import { Button, buttonVariants } from './ui/button'
 import Link from 'next/link'
@@ -9,6 +9,7 @@ import { Input } from './ui/input'
 import { Minus, Plus } from 'lucide-react'
 import { useToast } from './ui/use-toast'
 import { ToastAction } from './ui/toast'
+import { QuantityInput } from './QuantityInput'
 
 interface ProductButtonsProps {
   product:Product
@@ -23,9 +24,7 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
 
     
 
-    async function AddToCart(){
-
-    }
+   
 
     async function handleAddToCart(){
       toast({
@@ -42,50 +41,21 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
 
       dispatch({type:CART_ACTION.ADD_ITEM,payload:{...product,quantity}})    
     }
-    console.log(quantity)
+    function handleQuantity(val:number){
+      setQuantity(val)
+
+    }
 
   return (
   <div>
-    <div
-      className='grid grid-cols-4 w-32'
-    >
-      <Button
-        aria-label='button-deduct-quantity'
-        name='button-deduct-quantity'
-        className='p-0 '
-        onClick={()=>setQuantity(quantity===1?quantity:quantity-1)}
-      >
-        <Minus />
-      </Button>
-      <Input
-        type={"number"}
-        className='col-span-2 text-center remove-arrow'
-        value={quantity}
-        onChange={(e)=>{
-          const value=parseInt(e.target.value)
-          if(value<=0)return
-          setQuantity(value)
-        }}
-        onBlur={(e)=>{
-          const value=parseInt(e.target.value)
-          if(isNaN(value)){
-            setQuantity(1)
-          }
-        }}
-        
-        
+    
+      <QuantityInput
+        className='w-32 grid grid-cols-3'
+        defaultValue={quantity}
+        onChange={handleQuantity}
       />
-      
-      <Button
-        aria-label='button-add-quantity'
-        name='button-add-quantity'
-        className='p-0'
-        onClick={()=>setQuantity(quantity+1)}
-      >
-        <Plus />
-      </Button>
-      
-    </div>
+   
+
     <Button
       type='button'
       variant={"secondary"}
