@@ -39,7 +39,7 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
         ),
       })
 
-      dispatch({type:CART_ACTION.ADD_ITEM,payload:{...product,quantity}})    
+      dispatch({type:CART_ACTION.ADD_ITEM,payload:{...product,quantity,modifiedAt:Date.now()}})    
     }
     function handleQuantity(val:number){
       setQuantity(val)

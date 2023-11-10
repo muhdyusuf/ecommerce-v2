@@ -1,6 +1,6 @@
 'use client'
 import { useCart } from '@/context/cartContext'
-import { ChangeEvent, FC } from 'react'
+import {FC, useEffect, useState } from 'react'
 
 //ui
 import {
@@ -8,12 +8,14 @@ import {
     TableBody,
     TableCaption,
     TableCell,
+    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
 import CartTableRow from './CartTableRow'
 import { CART_ACTION } from '@/context/contextAction'
+import { PRICE_MULTIPLIER } from '@/lib/utils'
   
 
 interface ClientCartListProps {
@@ -22,11 +24,10 @@ interface ClientCartListProps {
 
 const ClientCartList: FC<ClientCartListProps> = ({}) => {
     const {cart,dispatch}=useCart()
-    
-    function handleAllSelected(e:ChangeEvent<HTMLInputElement>){
-        const isAllSelected=e.target.checked
-        
-        if(isAllSelected){
+    const [isAllSelected, setIsAllSelected] = useState(false)
+
+    function handleAllSelected(val:boolean){
+        if(val){
             cart.map(cartItem=>dispatch({
                 type:CART_ACTION.UPDATE_ITEM,
                 payload:{...cartItem,selected:true}
@@ -38,8 +39,16 @@ const ClientCartList: FC<ClientCartListProps> = ({}) => {
                 payload:{...cartItem,selected:false}
             }))
         }
-        console.log(isAllSelected,cart)
+        setIsAllSelected(val)
+     
     }
+
+    useEffect(()=>{
+        const _isAllSelected=cart.every(cartItem=>cartItem.selected)
+        setIsAllSelected(_isAllSelected)
+    },[cart])
+   
+    
    
   return (
     <Table
@@ -52,7 +61,8 @@ const ClientCartList: FC<ClientCartListProps> = ({}) => {
                         type="checkbox" 
                         name="select all cart item" 
                         id="cart select all"
-                        onChange={handleAllSelected} 
+                        checked={isAllSelected}
+                        onChange={()=>handleAllSelected(!isAllSelected)} 
                     />   
                 </TableHead>
                 <TableHead>Product</TableHead>
@@ -70,6 +80,29 @@ const ClientCartList: FC<ClientCartListProps> = ({}) => {
                 {...cartItem}/>
             ))}
         </TableBody>
+        <TableFooter>
+                <TableRow>
+                    <TableCell
+                    >
+                        
+                    </TableCell>
+                    <TableCell>
+                        total
+                    </TableCell>
+                    <TableCell>
+                        <p>
+                        {cart.reduce((total,cartItem)=>{
+                            if(!cartItem.selected)return total
+                            const cartItemTotal=(cartItem.price*PRICE_MULTIPLIER)*cartItem.quantity
+                            return((total*PRICE_MULTIPLIER)+cartItemTotal)/PRICE_MULTIPLIER
+                        },0)}
+                        </p>
+                    </TableCell>
+
+                    
+                </TableRow>
+               
+        </TableFooter>
     </Table>
    )
 }

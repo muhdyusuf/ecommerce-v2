@@ -2,6 +2,7 @@
 import { FC } from 'react'
 import ProductButtons from '@/components/ProductButtons'
 import Image from 'next/image'
+import ProductImageSlider from '@/components/ProductImageSlider'
 
 interface pagesProps {
   params:{
@@ -27,7 +28,7 @@ const pages: FC<pagesProps> = async ({params,searchParams}) => {
     <main>
       {product&&(
       <div
-        className='w-full grid sm:grid-cols-[400px,1fr]'
+        className='w-full'
       >
         <div
           className=''
@@ -35,14 +36,23 @@ const pages: FC<pagesProps> = async ({params,searchParams}) => {
           <div
             className=''
           >
-          <Image
-            width={300}
-            height={300}
-            className='w-full h-auto aspect-square object-contain'
-            alt="product iamge"
-            src={product?.image}
+            <Image
+              width={300}
+              height={300}
+              className='w-full h-auto aspect-square object-contain hidden sm:block'
+              alt="product iamge"
+              src={product?.image}
             />
+            <div
+              className="block sm:hidden"
+            >
+            <ProductImageSlider 
+              images={[product.image,product.image]}
+              className='sm:hidden'  
+              />
+            </div>
           </div>
+
           <div className='hidden sm:block'>
             <ul
               className='w-full grid grid-cols-4 gap-5'

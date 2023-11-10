@@ -2,6 +2,7 @@
 import Filter from '@/components/Filter'
 import ServerFilter from '@/components/ServerFilter'
 import Sorter from '@/components/Sorter'
+import SorterInput from '@/components/SorterInput'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -27,6 +28,7 @@ interface pageProps {
 
 const page: FC<pageProps> = async ({searchParams,params}) => {
     const query=searchParams
+    console.log(query)
 
     
     
@@ -43,7 +45,7 @@ const page: FC<pageProps> = async ({searchParams,params}) => {
       } catch (error) {
         
       }
-      console.log(data)
+
     
 
 
@@ -55,7 +57,7 @@ const page: FC<pageProps> = async ({searchParams,params}) => {
    <main
     className='flex'
    >
-    <section
+    <div
       className='grid grid-cols-[250px,1fr]'
     >
       <aside
@@ -66,23 +68,18 @@ const page: FC<pageProps> = async ({searchParams,params}) => {
 
           
       </aside>
-      {/* <div
-        className='overflow-visible' 
-      >
-        <Sorter/>
-        <select name="" id="">
-          <option value="asda">
-            asdasda
-          </option>
-        </select>
-      </div> */}
-
+      <div>
+      <div 
+      className='w-full flex justify-end'>
+        <SorterInput/>
+      </div>
         <div
-          className='grid grid-cols-4 gap-8'
+          className='flex flex-wrap justify-between'
           >
           {data.map((product:IProduct)=>(
             <div
               key={crypto.randomUUID()}
+              className='w-[min(100%,300px)]'
             >
               <div
                 className='p-4'
@@ -104,7 +101,8 @@ const page: FC<pageProps> = async ({searchParams,params}) => {
             </div>
           ))}
         </div>
-      </section>
+      </div>
+      </div>
    </main>
    )
 }

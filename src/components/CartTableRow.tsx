@@ -4,6 +4,7 @@ import {QuantityInput} from './QuantityInput'
 import Link from 'next/link'
 import { useCart } from '@/context/cartContext'
 import { CART_ACTION } from '@/context/contextAction'
+import { PRICE_MULTIPLIER } from '@/lib/utils'
 
 interface CartTableRowProps extends CartItem {}
 
@@ -14,7 +15,7 @@ const url=process.env.NEXT_PUBLIC_APP_URL
  const {dispatch}=useCart()
  
 function handleSetQuantity(val:number){
-    console.log(val,"hello")
+    console.log(cartItem)
    dispatch({
         type:CART_ACTION.UPDATE_ITEM,
         payload:{...cartItem,quantity:val}
@@ -28,6 +29,11 @@ function handleSetSelected(e:ChangeEvent<HTMLInputElement>){
         payload:{...cartItem,selected:isSelected}
     })
 }
+useEffect(()=>{
+    console.log("rerender")
+},[cartItem])
+
+
 
 
 
@@ -39,7 +45,7 @@ function handleSetSelected(e:ChangeEvent<HTMLInputElement>){
                 type="checkbox"
                 name=""
                 id=""
-                defaultChecked={cartItem.selected||false}
+                checked={cartItem.selected||false}
                 onChange={handleSetSelected}
             />   
         </TableCell>
@@ -68,7 +74,7 @@ function handleSetSelected(e:ChangeEvent<HTMLInputElement>){
        
         </TableCell>
         <TableCell 
-            className="text-right"
+            className="text-right w-32"
         >   
             <p>
             <span
@@ -76,7 +82,7 @@ function handleSetSelected(e:ChangeEvent<HTMLInputElement>){
             >
                 Rm
             </span>
-            {((cartItem.price*100000)*(cartItem.quantity||1))/100000}
+            {((cartItem.price*PRICE_MULTIPLIER)*(cartItem.quantity||1))/PRICE_MULTIPLIER}
             </p>
         
         </TableCell>

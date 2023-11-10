@@ -56,7 +56,8 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
                 
             />
             <X 
-                className='absolute right-2 top-0 bottom-0  w-4 p-[1px] h-auto aspect-square m-auto bg-slate-300 rounded-full scale-0  overflow-hidden transition-transform ease-in peer-[:focus:not(placeholder-shown)]:transform-none peer-[:focus:placeholder-shown]:scale-0 cursor-pointer '
+                className='absolute right-2 top-0 bottom-0  w-4 p-[1px] h-auto aspect-square m-auto bg-slate-300 rounded-full scale-0  overflow-hidden transition-transform ease-in peer-[:not(placeholder-shown)]:transform-none peer-[:focus:placeholder-shown]:scale-0 peer-[:placeholder-shown]:scale-0 cursor-pointer '
+                onClick={()=>setInputValue("")}
             />
         </label>
        

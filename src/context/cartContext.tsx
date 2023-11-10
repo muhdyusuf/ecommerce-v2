@@ -1,7 +1,8 @@
 'use client'
-import { FC,createContext, useReducer, useContext, ReactNode, useEffect } from 'react';
+import { FC,createContext, useReducer, useContext, ReactNode, useEffect, useState } from 'react';
 import { CART_ACTION } from './contextAction';
 import { stat } from 'fs';
+import { toast } from '@/components/ui/use-toast';
 
 type CartContextType = {
   cart: CartItem[];
@@ -10,48 +11,48 @@ type CartContextType = {
 
 type CartAction = { type:string; payload:CartItem };
 
-const CartContext = createContext<CartContextType|null>(null);
+const CartContext = createContext<CartContextType|undefined>(undefined);
 
 
-const cartReducer = (state: CartItem[], action: CartAction) => {
+const cartReducer = (state: CartList, action: CartAction) => {
   let _state=[...state]
+  const existingItemIndex = _state.findIndex((cartItem) => cartItem.id === action.payload.id);
 
-  switch (action.type) {
-    case CART_ACTION.ADD_ITEM:
-      const {quantity,...rest} = action.payload;
-      const existingItemIndex = _state.findIndex((cartItem) => cartItem.id === action.payload.id);
-
-      if (existingItemIndex !== -1) {
-        _state[existingItemIndex].quantity += quantity
-        _state[existingItemIndex].modifiedAt=Date.now()
+    switch (action.type) {
+      case CART_ACTION.ADD_ITEM:
+        const {quantity,...rest} = action.payload;
         
-      } else {
-        _state.push({quantity,...rest,modifiedAt:Date.now()});
+        if (existingItemIndex !== -1) {
+          _state[existingItemIndex].quantity += quantity
+          _state[existingItemIndex].modifiedAt=Date.now()
+          
+        } else {
+          _state.push({quantity,...rest,modifiedAt:Date.now()});
       }
-    break;
-
-    case CART_ACTION.DELETE_ITEM:
-      _state = state.filter((cartItem) => cartItem.id !== action.payload.id);
-    break;
-
-    case CART_ACTION.UPDATE_ITEM:{
-      _state = state.map((cartItem) => {
-        if (cartItem.id === action.payload.id) {
-          return action.payload;
+      break;
+      
+      case CART_ACTION.DELETE_ITEM:
+        if(existingItemIndex!== -1){
+          _state.splice(existingItemIndex,1)
         }
-        return cartItem;
-      })
+        break;
+        
+    case CART_ACTION.UPDATE_ITEM:{
+      if(existingItemIndex !== -1){
+        _state[existingItemIndex]={...action.payload}
+      }
     }
     break;
     default:
       return _state;
-  }
+    }
+  
+
   _state.sort((a,b)=>{
     if(a.modifiedAt<b.modifiedAt)return 1
     else if(a.modifiedAt>b.modifiedAt)return -1
     else return 0
   })
-
 
 
   return _state
@@ -60,12 +61,12 @@ const cartReducer = (state: CartItem[], action: CartAction) => {
 
 
 
-const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
-  const [cart, dispatch] = useReducer(cartReducer, [], () => {
-    const storedCart = localStorage.getItem('cart');
-    return storedCart ? JSON.parse(storedCart) : [];
-  });
+const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
+  
+  const cartListFromLocalStorage = JSON.parse(localStorage.getItem('cart') || '[]');
+
+  const [cart, dispatch] = useReducer(cartReducer,cartListFromLocalStorage);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
