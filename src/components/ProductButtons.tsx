@@ -65,7 +65,7 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
     </Button>
 
     <Link
-      className={buttonVariants({variant:"default"})}
+      className={buttonVariants()}
       href={`/checkout?cartItem=${product.id}&quantity=${quantity}`}
     > 
       Buy Now

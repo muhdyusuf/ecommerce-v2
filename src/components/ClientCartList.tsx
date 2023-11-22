@@ -15,7 +15,8 @@ import {
   } from "@/components/ui/table"
 import CartTableRow from './CartTableRow'
 import { CART_ACTION } from '@/context/contextAction'
-import { PRICE_MULTIPLIER } from '@/lib/utils'
+import { PRICE_MULTIPLIER, formatPrice } from '@/lib/utils'
+import { Button } from './ui/button'
   
 
 interface ClientCartListProps {
@@ -51,6 +52,7 @@ const ClientCartList: FC<ClientCartListProps> = ({}) => {
     
    
   return (
+    <>
     <Table
     >
         <TableHeader>
@@ -91,11 +93,11 @@ const ClientCartList: FC<ClientCartListProps> = ({}) => {
                     </TableCell>
                     <TableCell>
                         <p>
-                        {cart.reduce((total,cartItem)=>{
+                        {formatPrice(cart.reduce((total,cartItem)=>{
                             if(!cartItem.selected)return total
                             const cartItemTotal=(cartItem.price*PRICE_MULTIPLIER)*cartItem.quantity
                             return((total*PRICE_MULTIPLIER)+cartItemTotal)/PRICE_MULTIPLIER
-                        },0)}
+                        },0))}
                         </p>
                     </TableCell>
 
@@ -104,6 +106,15 @@ const ClientCartList: FC<ClientCartListProps> = ({}) => {
                
         </TableFooter>
     </Table>
+    <div>
+        <Button
+            type='button'
+            disabled={cart.every(cartItem=>!cartItem.selected)}
+        >
+            Checkout
+        </Button>
+    </div>
+    </>
    )
 }
 
