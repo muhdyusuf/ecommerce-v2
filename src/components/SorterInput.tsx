@@ -105,6 +105,7 @@ const SorterInput: FC<SorterInputProps> = ({}) => {
             >
                 {sortByArr.map(_sorter=>(
                     <label 
+                    key={crypto.randomUUID()}
                     htmlFor="sortByRelevant"
                     className='w-full relative'
                     >

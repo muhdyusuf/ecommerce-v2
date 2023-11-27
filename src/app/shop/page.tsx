@@ -55,10 +55,10 @@ const page: FC<pageProps> = async ({searchParams,params}) => {
   
   return (
    <main
-    className='flex'
+    className='min-h-screen-minus-navbar md:container'
    >
     <div
-      className='grid grid-cols-[250px,1fr]'
+      className='grid grid-cols-[250px,1fr] w-full'
     >
       <aside
           className='hidden md:block'

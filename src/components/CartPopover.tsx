@@ -2,7 +2,7 @@
 import { ShoppingBag, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import { FC,useEffect,useState } from 'react'
-import { Button } from './ui/button'
+import { Button, buttonVariants } from './ui/button'
 import { cn } from '@/lib/utils'
 import { Popover, PopoverTrigger } from './ui/popover'
 import { PopoverClose, PopoverContent } from '@radix-ui/react-popover'
@@ -41,23 +41,24 @@ const url=process.env.NEXT_PUBLIC_APP_URL
   return (
    <>
     <Link
-        className='md:hidden'
-        href="/cart"
+        href={"cart"}
+        className={cn(
+            buttonVariants({variant:"ghost"}),
+            `hover:bg-slate-100/10 m-0 p-1 relative md:hidden`
+
+        )}
     >
-        <div
-            className='relative w-min'
-        >
+
         <span
-            className='empty:hidden absolute bg-red-600 top-0 right-0 rounded-full h-4 aspect-square overflow-hidden leading-none text-center box-content p-[1px] text-[.8rem] grid place-content-center'
-        >
+            className='empty:hidden absolute bg-primary text-white top-0 right-0 rounded-md h-4 aspect-square overflow-hidden leading-none text-center p-1 text-[.8rem] grid place-content-center'
+            >
             {cart.length>0?cart.length:null}
         </span>
-         <ShoppingBag
-            strokeWidth={1}
-            className='w-8 h-auto aspect-square'
-         />
-        </div>
-
+        <ShoppingBag
+            strokeWidth={2}
+            className='w-6 h-auto aspect-square'
+            />
+        
     </Link>
     <Popover>
         <PopoverTrigger
@@ -72,7 +73,7 @@ const url=process.env.NEXT_PUBLIC_APP_URL
                 >
         
                 <span
-                    className='empty:hidden absolute bg-slate-300 top-0 right-0 rounded-md h-4 aspect-square overflow-hidden leading-none text-center p-1 text-[.8rem] grid place-content-center'
+                    className='empty:hidden absolute bg-primary text-white top-0 right-0 rounded-md h-4 aspect-square overflow-hidden leading-none text-center p-1 text-[.8rem] grid place-content-center'
                     >
                     {cart.length>0?cart.length:null}
                 </span>
@@ -85,6 +86,7 @@ const url=process.env.NEXT_PUBLIC_APP_URL
         </PopoverTrigger>
         <PopoverContent
             className='bg-slate-100 p-4 rounded-md'
+            align='end'
         >
             <ul>
             {cart.slice(0,4).map(product=>(

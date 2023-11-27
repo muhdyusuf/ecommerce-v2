@@ -61,7 +61,7 @@ const PriceRangeInput: FC<PriceRangeInputProps> = (
     />
     <Button
         type='button'
-        variant={"outline"}
+        variant={"secondary"}
         className='col-span-full'
         onClick={trigger}
 

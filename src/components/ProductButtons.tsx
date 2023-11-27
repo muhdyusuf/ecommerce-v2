@@ -30,13 +30,7 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
       toast({
         title: "Added to Cart",
         description: `${product.title} is added to your cart`,
-        action: (
-          <ToastAction 
-            altText="Goto schedule to undo"
-          >
-            Undo
-          </ToastAction>
-        ),
+
       })
 
       dispatch({type:CART_ACTION.ADD_ITEM,payload:{...product,quantity,modifiedAt:Date.now()}})    

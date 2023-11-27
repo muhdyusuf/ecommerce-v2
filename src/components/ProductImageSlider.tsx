@@ -142,6 +142,7 @@ const ProductImageSlider: FC<ProductImageSliderProps> = ({images,className}) => 
     >
       {images.map(image=>(
         <SwiperSlide
+          key={crypto.randomUUID()}
           className='w-full'
         >
           <Image

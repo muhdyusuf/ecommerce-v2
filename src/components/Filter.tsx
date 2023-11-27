@@ -19,7 +19,7 @@ import RatingInput from './RatingInput';
         maxPrice:z.number().optional(),
     }).refine(data=>{
         if(data.maxPrice==undefined&&data.minPrice==undefined)return true
-        if(!data?.maxPrice||!data?.minPrice)return false
+        if(!data?.maxPrice||(!data?.minPrice&&data.minPrice!==0))return false
         return (data.maxPrice>data.minPrice)
     },{
         message:"range is invalid",

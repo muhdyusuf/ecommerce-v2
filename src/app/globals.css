@@ -24,6 +24,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+    --navbar-height:3.5rem;
   }
  
   .dark {
@@ -56,17 +57,16 @@
   }
   body {
     @apply bg-background text-foreground;
+    padding-top: var(--navbar-height)
   }
 }
 
 
 @tailwind components;
-    section,main{
-        @apply md:container
-    }
+    nav,footer{
+      @apply md:container
+}
 @tailwind utilities;
-
-
 
 
 .remove-arrow::-webkit-inner-spin-button,
@@ -77,4 +77,5 @@
 .remove-arrow {
     -moz-appearance: textfield;
 }
+
 

@@ -4,6 +4,7 @@ import './globals.css'
 import Navbar from '@/components/Navbar'
 import { CartProvider } from '../context/cartContext'
 import { Toaster } from "@/components/ui/toaster"
+import { cn } from '@/lib/utils'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,7 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className} suppressHydrationWarning={true}>
+      <body 
+        className={inter.className} 
+          suppressHydrationWarning={true}>
         <CartProvider>
         <Navbar/>
         {children}

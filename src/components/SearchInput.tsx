@@ -30,11 +30,13 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
 
     function onSubmit(e:React.FormEvent){
         e.preventDefault()
+     
         const trimmedValue=inputValue.trim()
         if(trimmedValue===""){
             alert("input value cannot be empty")
         }
         else{
+            console.log(process.env.NEXT_PUBLIC_APP_URL,"HELLO")
             router.push(`${process.env.NEXT_PUBLIC_APP_URL}/shop?search=${inputValue}`)
         }
 
@@ -43,7 +45,7 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
 
   return (
     <form
-        className='w-[min(80%,400px)] bg-slate-200 flex
+        className='w-[min(100%,400px)] bg-slate-200 flex
         rounded-md justify-between'
         onSubmit={onSubmit}
     >
@@ -55,7 +57,7 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
                 type="text"
                 id='searchbox'
                 placeholder='Search..' 
-                className={cn("bg-transparent py-0 m-0 peer focus:border-offset-0")}
+                className={cn("bg-transparent py-0 m-0 peer/searchInput focus:border-offset-0")}
                 minLength={3}
                 required
                 onChange={(e)=>setInputValue(e.target.value)}
@@ -63,7 +65,7 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
                 
             />
             <X 
-                className='absolute right-2 top-0 bottom-0  w-4 p-[1px] h-auto aspect-square m-auto bg-slate-300 rounded-full scale-0  overflow-hidden transition-transform ease-in peer-[:not(placeholder-shown)]:transform-none peer-[:focus:placeholder-shown]:scale-0 peer-[:placeholder-shown]:scale-0 cursor-pointer '
+                className='absolute right-2 top-0 bottom-0  w-4 p-[1px] h-auto aspect-square m-auto bg-slate-300 rounded-full scale-0  overflow-hidden transition-transform ease-in peer-[:not(placeholder-shown)]/searchInput:transform-none peer-[:focus:placeholder-shown]/searchInput:scale-0 peer-[:placeholder-shown]/searchInput:scale-0 cursor-pointer '
                 onClick={()=>setInputValue("")}
             />
         </label>
