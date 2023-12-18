@@ -7,10 +7,11 @@ import Image from 'next/image';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import {Navigation, Pagination } from 'swiper/modules';
+import { cn } from '@/lib/utils';
 
-// const Carousel:FC = () => {
 
-//   const [currentSlide, setCurrentSlide] = useState({index:0,progress:0});
+
 
 //   const [current, setCurrent] = useState(0);
 
@@ -120,69 +121,68 @@ import 'swiper/css/navigation';
 
 // export default Carousel;
 
-
 interface ProductImageSliderProps {
   images:string[]
-  className:string
+  className?:string
+  imageSize?:number
 }
 
-const ProductImageSlider: FC<ProductImageSliderProps> = ({images,className}) => {
+const ProductImageSlider: FC<ProductImageSliderProps> = ({images,className,imageSize}) => {
   const swiperRef=useRef<SwiperRef|null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
+
   return (
     <div
-      className='w-full relative'
+      className='w-full relative bg-background'
     >
     <Swiper
-      className='w-full'
-      ref={swiperRef}
+      className={cn("relative",className)}
       onSlideChange={(slide)=>{
         setCurrentIndex(slide.activeIndex)
       }}
+      ref={swiperRef}
     >
       {images.map(image=>(
         <SwiperSlide
           key={crypto.randomUUID()}
           className='w-full'
+
         >
           <Image
-            width={300}
-            height={300}
+            width={imageSize||300}
+            height={imageSize||300}
             alt="photo"
             src={image}
-            className='w-full h-auto aspect-square object-contain'
+            className='w-full h-auto aspect-square object-cover'
             />
         </SwiperSlide>
       ))}
       
-    </Swiper>
-
-    <Button 
-      className='absolute top-0 bottom-0 mb-auto mt-auto left-0 z-50'
-      type="button"
-      disabled={currentIndex===0}
-      onClick={()=>{
-        if(!swiperRef.current)return
-        swiperRef.current.swiper.slidePrev()
-      }}
-    >
-      Prev
-    </Button>
-    <Button 
-      className='absolute top-0 bottom-0 mb-auto mt-auto right-0 z-50'
-      type="button"
-      disabled={currentIndex+1>=images.length}
-      onClick={()=>{
-        if(!swiperRef.current)return
-        swiperRef.current.swiper.slideNext()
-      }}
-    >
-      next
-    </Button>
     <div
       className='absolute bottom-0 right-0 m-4 bg-white/80 shadow-md rounded-full p-1 px-2 z-50'
     >
       {`${currentIndex+1}/${images.length}`}
+    </div>
+    </Swiper>
+    <div
+      className='grid grid-cols-4 bg-background gap-1 mt-1'
+    >
+      {images.map((image,index)=>(
+        <Image
+          key={index+image}
+          src={image}
+          width={100}
+          height={100}
+          alt={image}
+          className={cn(
+            currentIndex===index&&"opacity-70 outline outline-2 outline-muted-foreground outline-offset-2",
+            "object-cover w-full h-auto aspect-square rounded-md",
+          )}
+          onClick={()=>swiperRef.current?.swiper.slideTo(index)}
+        />
+
+   
+      ))}
     </div>
     </div>
    )

@@ -61,13 +61,14 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue,onChange,.
     >
       <Button
         type='button'
+        variant={"outline"}
         aria-label='button-deduct-quantity'
         name='button-deduct-quantity'
         className={cn("p-0 w-full h-auto aspect-square")}
         onClick={decrement}
       
         >
-        <Minus/>
+        <Minus strokeWidth={4} className='text-muted-foreground w-3'/>
       </Button>
 
       <Input
@@ -86,13 +87,14 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue,onChange,.
 
        <Button
         type='button'
+        variant={"outline"}
         aria-label='button-add-quantity'
         name='button-add-quantity'
         className={cn("p-0 w-full h-auto aspect-square")}
         onClick={increment}
      
         >
-        <Plus/>
+        <Plus strokeWidth={4} className='text-muted-foreground w-3'/>
       </Button>
     </fieldset>
    )

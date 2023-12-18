@@ -39,7 +39,7 @@ const SignInForm:FC<SignUpFormProps>=({})=>{
         className='flex flex-col gap-4'
     >
         <form
-             className='w-[min(100%,400px)]  flex flex-col'
+             className='w-full  flex flex-col'
              onSubmit={handleSubmit(onsubmit)}
         >
             <div>

@@ -3,16 +3,16 @@ const nextConfig = {
     experimental:{
         serverActions:true
     },
-    images: {
-        remotePatterns: [
+    images:{
+      remotePatterns: [
           {
             protocol: 'https',
-            hostname: 'fakestoreapi.com',
+            hostname: 'wawzxvxxzvalaeswnzuy.supabase.co',
             port: '',
-            pathname: '/img/**',
+            pathname: '/storage/v1/object/public/ecommerce-v2/**',
           },
         ],
-      },
+  }
 }
 
 module.exports = nextConfig

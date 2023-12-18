@@ -1,0 +1,109 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Billboard {
+  id        Int      @id @default(autoincrement())
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  label     String
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  quantity  Int
+  productId Int
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orderId   Int
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  product   Product[]
+}
+
+model Colour {
+  id        Int       @id @default(autoincrement())
+  name      String
+  value     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  product   Product[]
+}
+
+model Order {
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  status    String
+  userId    Int
+  phone     String     @default("")
+  address   String     @default("")
+  total     Int
+  email     String     @default("")
+  name      String     @default("")
+  cartItem  CartItem[]
+  user      User       @relation(fields: [userId], references: [id])
+}
+
+model Product {
+  id          Int        @id @default(autoincrement())
+  name        String
+  price       Int
+  description String
+  categoryId  Int
+  stock       Int
+  imageUrls   String[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  sizeId      Int
+  colourId    Int
+  isArchived  Boolean    @default(false)
+  isFeatured  Boolean    @default(false)
+  cartItem    CartItem[]
+  category    Category   @relation(fields: [categoryId], references: [id])
+  colour      Colour     @relation(fields: [colourId], references: [id])
+  size        Size       @relation(fields: [sizeId], references: [id])
+  rating      Rating?
+}
+
+model Rating {
+  id        Int     @id @default(autoincrement())
+  rate      Float
+  count     Int
+  productId Int     @unique
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Size {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  product   Product[]
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  username  String
+  email     String
+  password  String
+  createdAt DateTime   @default(now())
+  cartItem  CartItem[]
+  order     Order[]
+}

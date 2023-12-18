@@ -20,6 +20,7 @@ import { QuantityInput } from './QuantityInput'
 import { PRICE_MULTIPLIER, cn, formatPrice } from '@/lib/utils'
 import { X } from 'lucide-react'
 import Link from 'next/link'
+import { Input } from './ui/input'
  
 
 interface CartItemProps {
@@ -47,41 +48,61 @@ const CartItem:FC<CartItemProps>=({cartItem})=>{
  return(
 
     <div
-      className='w-full  rounded-md py-8 grid grid-cols-[auto,auto,1fr,1fr]  gap-x-4'
+      className='w-full p-4 grid grid-cols-[auto,auto,1fr,1fr]  gap-x-4 border-t-2 border-secondary'
     > 
-            <input 
+         <div
+            className='row-span-2'
+         >
+            <Input 
                   type="checkbox"
                   name=""
                   id=""
                   checked={cartItem.selected||false}
                   onChange={handleSetSelected}
-                  className='row-span-2 self-start'
-               />  
+                  className='self-center'
+            />  
+         </div>
             
          <Link
             href={`${process.env.NEXT_PUBLIC_APP_URL}/product/${cartItem.id}`}
-            className='aspect-square w-[100px] row-span-2'
+            className='w-[100px] h-auto aspect-square overflow-hidden row-span-2'
          >
             <Image 
                src={cartItem.image}
                width={300}
                height={300}
-               className='object-cover'
+               className='object-contain w-[100px] aspect-square'
                alt={`${cartItem.name}image`}
             />
          </Link>
 
         
          <Link
-            href={`${process.env.NEXT_PUBLIC_APP_URL}/product/${cartItem.id}`}
+               href={`${process.env.NEXT_PUBLIC_APP_URL}/product/${cartItem.id}`}
          >
             {cartItem.name||cartItem.title}
          </Link>
+
+         <div
+            className='justify-self-end '
+         >
+            {
+               formatPrice(((cartItem.price*PRICE_MULTIPLIER)*(cartItem.quantity||1))/PRICE_MULTIPLIER)
+            }
+         </div>
+    
+    
+         <QuantityInput
+            onChange={handleSetQuantity}
+            defaultValue={cartItem.quantity}
+            className='w-32 grid grid-cols-[1fr,2fr,1fr] gap-1 items-center self-end'
+         />
+
          <AlertDialog>
             <AlertDialogTrigger
                className={cn(
-                  buttonVariants({variant:"ghost"}),
-                  "justify-self-end p-0"
+                  buttonVariants({variant:"outline"}),
+                  "justify-self-end self-end p-2"
                )}
                >
                <X />
@@ -106,20 +127,9 @@ const CartItem:FC<CartItemProps>=({cartItem})=>{
                </AlertDialogFooter>
             </AlertDialogContent>
          </AlertDialog>
-    
-    
-         <QuantityInput
-            onChange={handleSetQuantity}
-            defaultValue={cartItem.quantity}
-            className='w-32 grid grid-cols-[1fr,2fr,1fr] gap-1 items-center self-end'
-            />
-         <div
-            className='justify-self-end self-end'
-         >
-            {
-               formatPrice(((cartItem.price*PRICE_MULTIPLIER)*(cartItem.quantity||1))/PRICE_MULTIPLIER)
-            }
-         </div>
+
+
+        
     
       
         

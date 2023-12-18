@@ -11,16 +11,17 @@ interface NavbarProps {
 
 const Navbar: FC<NavbarProps> = ({}) => {
   return (
+    <>
     <header
-        className='fixed top-0 left-0 w-full bg-accent-500/50 backdrop-blur-[2px] z-50 h-navbar'
-    >
-        <nav
-            className='p-2 md:container flex justify-between items-center h-full gap-2'
+        className='sticky top-0 left-0 w-full  h-16 z-50 border-b-2 border-muted bg-background'
         >
+        <nav
+            className='md:container flex justify-between items-center h-full gap-2'
+            >
             <Link
                 href={"/"}
                 className='hidden sm:block'
-            >
+                >
                 home
             </Link>
          
@@ -32,6 +33,8 @@ const Navbar: FC<NavbarProps> = ({}) => {
             
         </nav>
     </header>
+    
+    </>
    )
 }
 

@@ -64,7 +64,12 @@ const cartReducer = (state: CartList, action: CartAction) => {
 
 const CartProvider: FC<{ children: ReactNode }> = ({ children }) => {
   
-  const cartListFromLocalStorage = JSON.parse(localStorage.getItem('cart') || '[]');
+  let cartListFromLocalStorage:[]|CartList=[]
+
+
+    cartListFromLocalStorage = JSON.parse(localStorage.getItem('cart') || '[]');
+
+  
 
   const [cart, dispatch] = useReducer(cartReducer,cartListFromLocalStorage);
 

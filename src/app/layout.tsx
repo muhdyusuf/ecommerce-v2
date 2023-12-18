@@ -5,8 +5,9 @@ import Navbar from '@/components/Navbar'
 import { CartProvider } from '../context/cartContext'
 import { Toaster } from "@/components/ui/toaster"
 import { cn } from '@/lib/utils'
+import Footer from '@/components/Footer'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 export const metadata: Metadata = {
   title: 'My Store',
@@ -21,11 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body 
-        className={inter.className} 
+        className={"flex flex-col justify-around min-h-[100dvh] gap-6"} 
           suppressHydrationWarning={true}>
         <CartProvider>
-        <Navbar/>
-        {children}
+           {children}
         </CartProvider>
         <Toaster />
       </body>

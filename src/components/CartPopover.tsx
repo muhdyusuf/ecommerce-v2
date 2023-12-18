@@ -3,11 +3,12 @@ import { ShoppingBag, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import { FC,useEffect,useState } from 'react'
 import { Button, buttonVariants } from './ui/button'
-import { cn } from '@/lib/utils'
+import { cn, formatPrice } from '@/lib/utils'
 import { Popover, PopoverTrigger } from './ui/popover'
 import { PopoverClose, PopoverContent } from '@radix-ui/react-popover'
 import { CartProvider, useCart } from '@/context/cartContext'
 import { CART_ACTION } from '@/context/contextAction'
+import Image from 'next/image'
 
 interface CartProps {
   
@@ -85,32 +86,57 @@ const url=process.env.NEXT_PUBLIC_APP_URL
             </Button>
         </PopoverTrigger>
         <PopoverContent
-            className='bg-slate-100 p-4 rounded-md'
+            className='shadow-md bg-background p-4 rounded-md flex flex-col gap-2'
             align='end'
         >
-            <ul>
+            <h4 className='font-medium'>
+                Your Cart
+            </h4>
+            <ul
+                className='flex flex-col gap-1'
+            >
             {cart.slice(0,4).map(product=>(
                 <li
-                key={crypto.randomUUID()}
+                    key={crypto.randomUUID()}
+                    className='grid grid-cols-[4rem,300px,1fr] items-start gap-1'
                 >
-                    {product.name||product.title}
+                    <div
+                        className='w-12 h-auto aspect-square overflow-hidden'
+                    >
+                        <Image
+                            src={product.image}
+                            alt={`${product.title} image`}
+                            width={48}
+                            height={48}
+                            className='w-full h-full object-contain'
+                        />
+                    </div>
+                    <p
+                        className='break-words overflow-hidden h-min'
+                    >
+                        {product.name||product.title}
+                    </p>
+                    <p>
+                        {formatPrice(product.price)}
+                    </p>
                 </li>
             
             ))}
             </ul>
-            <div>
+            <PopoverClose asChild>
                 <Link
                     href={`${url}/cart`}
+                    className='text-primary'
                 >
-                    see more
+                    See All..
                 </Link>
-            </div>
+            </PopoverClose>
        
         </PopoverContent>
     </Popover>
     
    </>
-   )
+   ) 
 }
 
 export default Cart

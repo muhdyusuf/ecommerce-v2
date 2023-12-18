@@ -28,12 +28,12 @@ import RatingInput from './RatingInput';
 type FilterSchema=z.infer<typeof filterSchema>
 
 interface FilterProps {
-  
+  close?:()=>void
 }
 
 
 
-const Filter: FC<FilterProps> = ({}) => {
+const Filter: FC<FilterProps> = ({close=()=>{}}) => {
 
     const router=useRouter()
     const searchParams=useSearchParams()
@@ -114,22 +114,22 @@ const Filter: FC<FilterProps> = ({}) => {
 
      const filteredQueryParams = Object.fromEntries(
       Object.entries(flatennedData).filter(([_,value]) => value !== undefined)
-    );
+     );
 
       const query=qs.stringify(filteredQueryParams)
 
     
       router.push(`${url}/shop?search=${search}&${query}`)
-      
-      
-      }
+      close()
+
+    }
   
       function resetFilter(){ 
         reset()
         router.push(`${url}/shop?search=${searchParams.get("search")}`)
       }
 
-      console.log(errors,watch("priceRange"))
+     
       
 
      

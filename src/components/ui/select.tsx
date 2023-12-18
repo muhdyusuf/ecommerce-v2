@@ -39,7 +39,7 @@ const SelectContent = React.forwardRef<
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
       style={{
-        maxHeight:"var(--radix-select-content-available-height);"
+        maxHeight:"var(--radix-select-content-available-height)"
       }}
       ref={ref}
       className={cn(

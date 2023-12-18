@@ -6,12 +6,16 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { Billboard } from '@prisma/client';
+import Image from 'next/image';
 
 interface SwiperAutoProps {
-  
+  billboards:Billboard[]
 }
 
-const SwiperAuto: FC<SwiperAutoProps> = ({}) => {
+const SwiperAuto: FC<SwiperAutoProps> = ({
+  billboards
+}) => {
   return (
    <Swiper
         autoplay={{
@@ -24,18 +28,21 @@ const SwiperAuto: FC<SwiperAutoProps> = ({}) => {
         className='w-full aspect-video'
         modules={[Autoplay,Pagination]}
    >
-      <SwiperSlide
-        className='bg-blue-300'
-      >Slide 1</SwiperSlide>
-      <SwiperSlide
-        className='bg-red-300'
-      >Slide 2</SwiperSlide>
-      <SwiperSlide
-        className='bg-green-300'
-      >Slide 3</SwiperSlide>
-      <SwiperSlide
-        className='bg-red-300'
-      >Slide 4</SwiperSlide>
+      {
+        billboards.map(billboard=>(
+          <SwiperSlide
+            key={billboard.imageUrl+billboard.id}
+          >
+            <Image
+              src={billboard.imageUrl}
+              width={1000}
+              height={500}
+              alt={billboard.label}
+              className='w-full h-auto aspect-video object-cover'
+            />
+          </SwiperSlide>
+        ))
+      }
    </Swiper>
    )
 }

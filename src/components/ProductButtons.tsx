@@ -10,6 +10,7 @@ import { Minus, Plus } from 'lucide-react'
 import { useToast } from './ui/use-toast'
 import { ToastAction } from './ui/toast'
 import { QuantityInput } from './QuantityInput'
+import { Product } from '@prisma/client'
 
 interface ProductButtonsProps {
   product:Product
@@ -29,7 +30,7 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
     async function handleAddToCart(){
       toast({
         title: "Added to Cart",
-        description: `${product.title} is added to your cart`,
+        description: `${product.name} is added to your cart`,
 
       })
 
@@ -37,7 +38,10 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
     }
     function handleQuantity(val:number){
       setQuantity(val)
+    }
 
+    function handleBuyNow(){
+      
     }
 
   return (
@@ -60,7 +64,7 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
 
     <Link
       className={buttonVariants()}
-      href={`/checkout?cartItem=${product.id}&quantity=${quantity}`}
+      href={`${process.env.NEXT_PUBLIC_APP_URL}/checkout?cartItem=${product.id}&quantity=${quantity}`}
     > 
       Buy Now
     </Link>
