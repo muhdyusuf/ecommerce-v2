@@ -1,9 +1,8 @@
 'use client'
 import { FC } from 'react'
-import Cart from './CartPopover'
 import SearchInput from './SearchInput'
 import Link from 'next/link'
-import { CartProvider } from '@/context/cartContext'
+import CartPopover from './CartPopover'
 
 interface NavbarProps {
   
@@ -16,7 +15,7 @@ const Navbar: FC<NavbarProps> = ({}) => {
         className='sticky top-0 left-0 w-full  h-16 z-50 border-b-2 border-muted bg-background'
         >
         <nav
-            className='md:container flex justify-between items-center h-full gap-2'
+            className='md:container flex justify-between items-center h-full gap-2 relative'
             >
             <Link
                 href={"/"}
@@ -24,11 +23,9 @@ const Navbar: FC<NavbarProps> = ({}) => {
                 >
                 home
             </Link>
-         
-        
             <SearchInput/>
             
-            <Cart />
+            <CartPopover />
 
             
         </nav>

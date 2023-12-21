@@ -36,7 +36,6 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
             alert("input value cannot be empty")
         }
         else{
-            console.log(process.env.NEXT_PUBLIC_APP_URL,"HELLO")
             router.push(`${process.env.NEXT_PUBLIC_APP_URL}/shop?search=${inputValue}`)
         }
 

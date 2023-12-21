@@ -129,6 +129,11 @@ const page: FC<pageProps> = async ({searchParams}) => {
       },
       orderBy:{
         ...getOrderBy(sortBy)
+      },
+      include:{
+        colour:true,
+        category:true,
+        size:true,
       }
     })
 
@@ -214,22 +219,7 @@ const page: FC<pageProps> = async ({searchParams}) => {
       )}
       </main>
       {products.length===0&&(
-       <section
-       className='w-full bg-secondary py-6'
-       >
-          <div
-            className='w-full md:container flex flex-col md:flex-row'
-          >
-          <h1
-            className='lg:text-8xl text-2xl font-bold'
-            >
-            Featured
-          </h1>
-          <FeaturedProduct
-            className={`grid grid-cols-[repeat(auto-fit,min(50%,200px))] place-content-around`}
-            />
-          </div>
-      </section>
+       <FeaturedProduct/>
       )}
     </>
   )

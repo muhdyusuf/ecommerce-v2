@@ -6,43 +6,39 @@ import { Button, buttonVariants } from './ui/button'
 import { cn, formatPrice } from '@/lib/utils'
 import { Popover, PopoverTrigger } from './ui/popover'
 import { PopoverClose, PopoverContent } from '@radix-ui/react-popover'
-import { CartProvider, useCart } from '@/context/cartContext'
-import { CART_ACTION } from '@/context/contextAction'
 import Image from 'next/image'
+import useCart from '@/hooks/useCart'
 
 interface CartProps {
   
 }
 
-const Cart: FC<CartProps> = ({}) => {
-const {cart,dispatch}=useCart()
-const url=process.env.NEXT_PUBLIC_APP_URL
+const CartPopover: FC<CartProps> = ({}) => {
+    const [isMounted, setIsMounted] = useState(false)
+    useEffect(() => {
+      setIsMounted(true)
+    }, [])
     
-    useEffect(()=>{
-        if(cart.length===0){
-            let cartArr:CartItem[]=[]
-            ///fetch cart data
-            
-
-
-            cartArr.map(product=>{
-                dispatch({
-                    type:CART_ACTION.ADD_ITEM,
-                    payload:product
-                })
-            })
-            
-        }
-    },[])
-
-
-
-
-
-  return (
+    const {cart}=useCart()
+    const url=process.env.NEXT_PUBLIC_APP_URL
+    
+    
+    
+  return !isMounted?(
+    <Button
+    aria-label="cart-button-open-popover"
+    className={cn(`hover:bg-slate-100/10 m-0 p-1 relative`)}
+    variant={"ghost"}
+    >
+        <ShoppingBag
+            strokeWidth={2}
+            className='w-6 h-auto aspect-square'
+        />
+    </Button>
+  ):(
    <>
     <Link
-        href={"cart"}
+        href={"/cart"}
         className={cn(
             buttonVariants({variant:"ghost"}),
             `hover:bg-slate-100/10 m-0 p-1 relative md:hidden`
@@ -104,8 +100,8 @@ const url=process.env.NEXT_PUBLIC_APP_URL
                         className='w-12 h-auto aspect-square overflow-hidden'
                     >
                         <Image
-                            src={product.image}
-                            alt={`${product.title} image`}
+                            src={product.imageUrls[0]}
+                            alt={`${product.name} image`}
                             width={48}
                             height={48}
                             className='w-full h-full object-contain'
@@ -114,7 +110,7 @@ const url=process.env.NEXT_PUBLIC_APP_URL
                     <p
                         className='break-words overflow-hidden h-min'
                     >
-                        {product.name||product.title}
+                        {product.name}
                     </p>
                     <p>
                         {formatPrice(product.price)}
@@ -139,4 +135,4 @@ const url=process.env.NEXT_PUBLIC_APP_URL
    ) 
 }
 
-export default Cart
+export default CartPopover

@@ -1,13 +1,10 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
-import Navbar from '@/components/Navbar'
-import { CartProvider } from '../context/cartContext'
 import { Toaster } from "@/components/ui/toaster"
 import { cn } from '@/lib/utils'
-import Footer from '@/components/Footer'
+import { Inter } from 'next/font/google'
 
-
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'My Store',
@@ -22,12 +19,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body 
-        className={"flex flex-col justify-around min-h-[100dvh] gap-6"} 
-          suppressHydrationWarning={true}>
-        <CartProvider>
+        className={cn("flex flex-col gap-6",
+        inter.className
+        )} 
+        suppressHydrationWarning={true}>
+
            {children}
-        </CartProvider>
-        <Toaster />
+
+            <Toaster/>
+
       </body>
     </html>
   )

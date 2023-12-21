@@ -1,67 +1,112 @@
 'use client'
-import { FC, SyntheticEvent } from 'react'
+import { FC, useEffect, useState} from 'react'
+import { Metadata, ResolvingMetadata} from 'next'
 import { NextResponse } from 'next/server'
-import { Button } from '@/components/ui/button'
-import axios from 'axios'
-import { Metadata } from 'next'
-import prisma from '../../../../prisma/client'
+import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import useCart from '@/hooks/useCart'
+import Link from 'next/link'
+import { buttonVariants } from '@/components/ui/button'
+
 interface pageProps {
     searchParams:{
-      cartItem?:string,
-      quantity?:string
-      from?:string
+      success:"1"|"0",
+
     }
+    
 }
 
-// export const metadata: Metadata = {
-//   title: 'Checkout | Ecommerce-v2',
-//   description: 'mock e commerce',
-// }
+
 
 
 const page: FC<pageProps> = ({searchParams}) => {
+    const {success}=searchParams
+    const [secondLeft, setSecondLeft] = useState(5)   
     
-    const {cartItem,quantity,from}=searchParams
-
-   
-    
-    async function onCheckout(event:SyntheticEvent){
-      event.preventDefault()
-      const response=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/checkout`,{
-        method:"POST",
-        body:JSON.stringify({
-          cartItems:[{id:Number(cartItem),quantity:Number(quantity)}]
+    const {cart,removeItem}=useCart()
+    const router=useRouter()
+    useEffect(()=>{
+      if(success==="1"){
+        cart.map(item=>{
+          if(item.selected){
+            removeItem(item.id)
+          }
         })
-      })
-    
-      if(response.status===200){
-        const {url}=await response.json()
-        window.location=url
+        setTimeout(()=>router.replace(`${process.env.NEXT_PUBLIC_APP_URL}`),5000)
       }
-    }
-    
-  return (
-  <>
-    <main
-      className='md:container h-full'
-    >
-      <h1>
-        Checkout
-      </h1>
-      <Button
-        type='button'
-        onClick={onCheckout}
-      >
-        checkout
-      </Button>
-      <div>
+      else if(success==="0"){
+        setTimeout(()=>router.replace(`${process.env.NEXT_PUBLIC_APP_URL}/cart`),5000)
+      }
+      else{
+        router.push(`${process.env.NEXT_PUBLIC_APP_URL}`)
+      }
 
+      const intervalId = setInterval(() => {
+        setSecondLeft((_secondLeft) => {
+          if (_secondLeft === 0) {
+            clearInterval(intervalId)
+            return 0
+          } else {
+            return _secondLeft - 1;
+          }
+        })
+      }, 1000)
+
+      return ()=>clearInterval(intervalId)
+    },[])
+    
+    
+    
+    
+  
+    
+  return(
+    <main
+      className='md:container h-full flex justify-center'
+    >
+      <div
+        className='flex justify-center items-center flex-col gap-1 w-full h-auto aspect-video'
+      >
+
+        {success==="1"?(
+        <>
+        <h1>
+          order confirmed
+        </h1>
+        <h2>
+          you will be redirected to home in 
+          <span className='text-primary'>{` ${secondLeft}`}</span>s
+        </h2>
+        <Link
+          className={buttonVariants({variant:"link"})}
+          href={`${process.env.NEXT_PUBLIC_APP_URL}`}
+          replace
+        >
+          back to home
+        </Link>
+        </>):(
+        <>
+        <h1>
+          order cancelled
+        </h1>
+        <h2>
+          you will be redirected your cart in 
+          <span className='text-primary'>{` ${secondLeft}`}</span>s
+        </h2>
+        <Link
+          className={buttonVariants({variant:"link"})}
+          href={`${process.env.NEXT_PUBLIC_APP_URL}/cart`}
+          replace
+  
+        >
+          back to cart
+        </Link>
+        </>)}
+        
       </div>
     </main>
-    
-
-  </>
-   )
+  )
+   
 }
 
 export default page

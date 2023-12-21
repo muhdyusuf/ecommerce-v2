@@ -89,7 +89,6 @@ const corsHeader={
     });
     
     
-    
     const lineItems:Stripe.Checkout.SessionCreateParams.LineItem[]=[]
     
     createdOrder.cartItem.map((cartItem)=>{
@@ -107,27 +106,40 @@ const corsHeader={
     })
     
  
-   
-    const session=await stripe.checkout.sessions.create({
-        line_items:lineItems,
-        mode:"payment",
-        billing_address_collection:"required",
-        phone_number_collection:{
-            enabled:true
-        },
-        shipping_address_collection:{
-            allowed_countries:["MY"],
-        
-        },
-        success_url:`${process.env.NEXT_PUBLIC_APP_URL}/checkout?succes=1`,
-        cancel_url:`${process.env.NEXT_PUBLIC_APP_URL}/checkout?cancelled=1`,
-        metadata:{
-            orderId:createdOrder.id
-        }
-    })
-
-    return NextResponse.json({
-        url:session.url
-    },{headers:corsHeader})
+    try {
+        const session=await stripe.checkout.sessions.create({
+            line_items:lineItems,
+            mode:"payment",
+            billing_address_collection:"required",
+            phone_number_collection:{
+                enabled:true
+            },
+            shipping_address_collection:{
+                allowed_countries:["MY"],
+                
+            },
+            success_url:`${process.env.NEXT_PUBLIC_APP_URL}/checkout?success=1`,
+            cancel_url:`${process.env.NEXT_PUBLIC_APP_URL}/checkout?success=0`,
+            metadata:{
+                orderId:createdOrder.id
+            }
+        })
     
-  }
+        return NextResponse.json({
+            url:session.url
+        },{headers:corsHeader})
+    } catch (error) {
+        await prisma.order.delete({
+            where:{
+                id:createdOrder.id
+            }
+        })
+        return NextResponse.json({
+            error:{
+                message:"stripe error"
+            }
+        },{status:400})
+        
+    }
+    
+}

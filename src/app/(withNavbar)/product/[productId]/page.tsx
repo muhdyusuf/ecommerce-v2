@@ -4,6 +4,8 @@ import ProductImageSlider from '@/components/ProductImageSlider'
 import FeaturedProduct from '@/components/FeaturedProduct'
 import { formatPrice } from '@/lib/utils'
 import ProductButtons from '@/components/ProductButtons'
+import { NextResponse } from 'next/server'
+import { redirect } from 'next/dist/server/api-utils'
 
 interface pageProps {
  params:{
@@ -13,7 +15,7 @@ interface pageProps {
 
 const page:FC<pageProps>=async({params})=>{
   const {productId}=params
-  
+  if(!productId)throw new Error('Invalid Product Id')
   const product=await prisma.product.findUnique({
     where:{
       id:Number(productId)
@@ -25,7 +27,7 @@ const page:FC<pageProps>=async({params})=>{
       category:true
     }
   })
-  if(!product) return null
+  if(!product)throw new Error('Product not exist')
   
  return(
     <>
@@ -33,7 +35,7 @@ const page:FC<pageProps>=async({params})=>{
       className='md:container mb-6'
     >
       <div
-        className='grid lg:grid-cols-[450px,1fr]'
+        className='grid grid-cols-1 lg:grid-cols-[450px,1fr] gap-4'
         >
           <div
             className='w-full aspect-square'
@@ -45,7 +47,7 @@ const page:FC<pageProps>=async({params})=>{
           </div>
 
           <div
-            className='min-h-full w-full flex flex-col justify-between p-8'
+            className='min-h-full w-full flex flex-col justify-between md:p-8 p-2'
           >
             <h2
               className='text-4xl'
@@ -80,29 +82,9 @@ const page:FC<pageProps>=async({params})=>{
       </div>
 
     </main>
-    <section
-      className='bg-secondary'
-    >
-      <div
-        className='md:container py-6'
-        >
-          <div
-            className='flex flex-col md:flex-row md:justify-center md:items-center gap-6'
-            >
-          <h2
-            className='md:text-6xl text-2xl font-bold'
-            >
-            Featured
-          </h2>
-          <FeaturedProduct
-            className={`grid grid-cols-[repeat(auto-fit,200px)] gap-4`}
-            productId={product.id}
-          
-          />
-        </div>
-
-      </div>
-    </section>
+    <FeaturedProduct
+      productId={[product.id]}
+    />
     </>
 )}
 

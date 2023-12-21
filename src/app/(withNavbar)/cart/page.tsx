@@ -19,7 +19,7 @@ const page: FC<pageProps> = async({searchParams,params}) => {
 
   return (
     <main
-      className='container flex justify-center min-h-screen-minus-navbar'
+      className='md:container min-h-[calc(100vh-3rem)] flex justify-center'
     >
       <CartList/>
     </main>

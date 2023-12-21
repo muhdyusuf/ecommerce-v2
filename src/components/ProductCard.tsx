@@ -18,16 +18,21 @@ import {
     DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
-  import { buttonVariants } from './ui/button'
+  import { Button, buttonVariants } from './ui/button'
 
   import { cn, formatPrice } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Product } from '@prisma/client'
+import { Category, Colour, Product, Size } from '@prisma/client'
 import ProductImageSlider from './ProductImageSlider'
+import BuyNowButton from './BuyNowButton'
 
 interface ProductCardProps {
- product:Product
+ product:Product&{
+    colour:Colour
+    size:Size
+    category:Category
+ }
  className?:string
 }
 
@@ -77,18 +82,15 @@ const ProductCard:FC<ProductCardProps>=({product,className})=>{
                     {formatPrice(product.price)}
                 </p>
                 </Link>
-                <Link
-                    className={cn(buttonVariants(),"w-full")}
-                    href={`${process.env.NEXT_PUBLIC_APP_URL}/checkout?id=${product.id}`}
-                    >
-                    Buy Now
-                </Link>
+                {/* <BuyNowButton product={product}/> */}
            </CardFooter>
        </CardContent>
     </Card>
     <DialogContent>
         <div
-            className='w-[minmax(100%,1000px)] overflow-hidden'
+            className='w-[minmax(100%,1000px)] overflow-hidden
+            
+            '
         >
         <ProductImageSlider
             images={product.imageUrls}
