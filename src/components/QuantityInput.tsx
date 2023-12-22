@@ -9,55 +9,56 @@ import { cn } from '@/lib/utils'
 interface QuantityInputProps{
   children?:ReactNode,
   defaultValue:number,
+  maxValue:number
   onChange:(val:number)=>void,
   className?:string
 }
 
 
 
-const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue,onChange,...props}) => {
+const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange,className,maxValue}) => {
 
-  const [value, setValue] = useState<number|"">(defaultValue||1)
+  const [value, setValue] = useState<number|undefined>(defaultValue||1)
 
+  useEffect(()=>{
+    if(value===undefined){
+      setValue(1)
+      onChange(1)
+    }
+    else if(value>maxValue){
+      setValue(maxValue)
+      onChange(maxValue)
+    }
+    else{
+      onChange(value)
+    }
+
+  },[value])
 
   const increment = () => {
     
     const newValue = value?value + 1:1
     if(newValue>=1000000)return
     setValue(newValue)
-    if (onChange) {
-      onChange(newValue)
-    }
+
   }
   const decrement = () => {
     if (typeof value==="number" && value > 1) {
       const newValue = value - 1
       setValue(newValue)
-      if (onChange) {
-        onChange(newValue)
-      }
+ 
     }
   }
 
   const handleInputChange = (e:ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value)
-    if(newValue>=1000000)return
-    if (!isNaN(newValue)) {
-      setValue(newValue)
-      if (onChange) {
-        onChange(newValue)
-      }
-    }
-    else{
-      setValue("")
-  
-    }
+    setValue(newValue)
 
   }
 
   return (
     <fieldset
-      {...props}
+      className={className}
     >
       <Button
         type='button'
@@ -76,12 +77,7 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue,onChange,.
         className='text-center remove-arrow'
         value={value}
         onChange={handleInputChange}
-        onBlur={(e)=>{
-          const value=parseInt(e.target.value)
-          if(!value||value===0){
-            setValue(1)
-          }
-        }}
+    
       
       />
 

@@ -72,6 +72,7 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
         className='w-32 grid grid-cols-3'
         defaultValue={quantity}
         onChange={handleQuantity}
+        maxValue={product.stock}
       />
    
 

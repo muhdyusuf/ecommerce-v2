@@ -30,6 +30,7 @@ const CartItem:FC<CartItemProps>=({cartItem})=>{
    const {cart,updateItem,removeItem}=useCart()
   
    function handleSetQuantity(val:number){
+      console.log(val)
      updateItem({...cartItem,quantity:val})
    }
    function handleSetSelected(e:ChangeEvent<HTMLInputElement>){
@@ -37,7 +38,8 @@ const CartItem:FC<CartItemProps>=({cartItem})=>{
       const isSelected=e.target.checked
       updateItem({...cartItem,selected:isSelected})
   
-}
+      }
+     
  return(
 
     <div
@@ -89,7 +91,7 @@ const CartItem:FC<CartItemProps>=({cartItem})=>{
                </p> 
 
                <div
-                  className='flex flex-col md:flex-row items-center md:gap-2'
+                  className='flex flex-col w-max md:flex-row md:items-center items-start md:gap-2'
                   >
                   <p>
                      size: {cartItem.size}
@@ -97,6 +99,7 @@ const CartItem:FC<CartItemProps>=({cartItem})=>{
                   <QuantityInput
                      onChange={handleSetQuantity}
                      defaultValue={cartItem.quantity}
+                     maxValue={cartItem.stock}
                      className='w-32 grid grid-cols-[1fr,2fr,1fr] gap-1 items-center self-end'
                   />
                </div>
