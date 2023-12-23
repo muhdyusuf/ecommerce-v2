@@ -20,25 +20,23 @@ import { Trash, Trash2, X } from 'lucide-react'
 import Link from 'next/link'
 import { Input } from './ui/input'
 import useCart, { CartItemLocal } from '@/hooks/useCart'
+import { Checkbox } from './ui/checkbox'
  
 
 interface CartItemProps {
    cartItem:CartItemLocal
+   onSelected:(val:boolean)=>void
 }
 
-const CartItem:FC<CartItemProps>=({cartItem})=>{
+const CartItem:FC<CartItemProps>=({cartItem,onSelected=()=>{}})=>{
    const {cart,updateItem,removeItem}=useCart()
   
    function handleSetQuantity(val:number){
-      console.log(val)
      updateItem({...cartItem,quantity:val})
    }
-   function handleSetSelected(e:ChangeEvent<HTMLInputElement>){
-      
-      const isSelected=e.target.checked
-      updateItem({...cartItem,selected:isSelected})
-  
-      }
+   function handleSetSelected(checked:boolean){
+      onSelected(checked)
+   }
      
  return(
 
@@ -74,13 +72,11 @@ const CartItem:FC<CartItemProps>=({cartItem})=>{
                         >
                      {cartItem.name}
                   </Link>
-                  <Input 
-                     type="checkbox"
+                  <Checkbox 
                      name={cartItem.name+"selected"}
                      id={cartItem.id+"selected"}
-                     checked={cartItem.selected||false}
-                     onChange={handleSetSelected}
-                     className='w-min p-0 h-min'
+                     checked={cartItem.selected}
+                     onCheckedChange={handleSetSelected}
                   />  
                </div>
                <p>

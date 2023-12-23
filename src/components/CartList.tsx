@@ -1,4 +1,8 @@
 'use client'
+import {InfoPopover,InfoPopoverContent, InfoPopoverTrigger } from './InfoPopover'
+import { Popover, PopoverTrigger } from './ui/popover'
+import { Checkbox } from "@/components/ui/checkbox"
+
 import {FC, SyntheticEvent, useEffect, useState } from 'react'
 
 
@@ -7,11 +11,8 @@ import { Button, buttonVariants } from './ui/button'
 import CartItem from './CartItem'
 import { Loader2, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
-import useCart from '@/hooks/useCart'
+import useCart, { CartItemLocal } from '@/hooks/useCart'
 import { useRouter } from 'next/navigation'
-import {InfoPopover,InfoPopoverContent, InfoPopoverTrigger } from './InfoPopover'
-import { Popover, PopoverTrigger } from './ui/popover'
-import { PopoverContent } from '@radix-ui/react-popover'
   
 
 interface CartListProps {
@@ -22,7 +23,7 @@ const CartList: FC<CartListProps> = ({cartList}) => {
     const [isMounted, setIsMounted] = useState(false)
     const {cart,updateItem}=useCart()
     const [isAllSelected, setIsAllSelected] = useState(false)
-    const router=useRouter()
+
     function handleAllSelected(val:boolean){
         if(val){
             cart.map(product=>updateItem({...product,selected:true}))
@@ -33,13 +34,18 @@ const CartList: FC<CartListProps> = ({cartList}) => {
         setIsAllSelected(Boolean(val))
         
     }
+
+    function handleItemSelected(cartItem:CartItemLocal,selected:boolean){
+        updateItem({...cartItem,selected})
+        const isAllSelected=cart.every(cartItem=>cartItem.selected)
+        setIsAllSelected(isAllSelected)
+    }
     
-    useEffect(()=>{
-        const _isAllSelected=cart.every(cartItem=>cartItem.selected)
-        setIsAllSelected(_isAllSelected)
-    },[cart])
+    
     useEffect(() => {
         setIsMounted(true)
+        const isAllSelected=cart.every(cartItem=>cartItem.selected)
+        setIsAllSelected(isAllSelected)
     }, [])
 
     async function handleCheckout(event:SyntheticEvent){
@@ -118,20 +124,23 @@ const CartList: FC<CartListProps> = ({cartList}) => {
                     className='flex justify-end gap-1 items-end leading-none px-2'
                 >    
                     Select All 
-                    <input 
-                        type="checkbox" 
+                    <Checkbox 
                         name="select all cart item" 
                         id="cartSelectAll"
                         checked={isAllSelected}
-                        onChange={()=>handleAllSelected(!isAllSelected)}
-                        className='min-h-min bg-red-600 p-0 m-0'
+                        onCheckedChange={handleAllSelected}
+                
                     /> 
                 </label>
                 <div
                     className='col-span-full'
                 >
                     {cart.map(cartItem=>(
-                        <CartItem key={cartItem.id} cartItem={cartItem}/>
+                        <CartItem 
+                            key={cartItem.id} 
+                            cartItem={cartItem}
+                            onSelected={(selected=>handleItemSelected(cartItem,selected))}
+                        />
                     ))}
                 </div>
             </div>
