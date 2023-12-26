@@ -55,6 +55,12 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange
     setValue(newValue)
 
   }
+  const handleOnBlur = (e:ChangeEvent<HTMLInputElement>) => {
+    if(typeof value !=="number")return
+    
+    setValue(1)
+
+  }
 
   return (
     <fieldset
@@ -77,6 +83,7 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange
         className='text-center remove-arrow'
         value={value}
         onChange={handleInputChange}
+        onBlur={handleOnBlur}
     
       
       />
