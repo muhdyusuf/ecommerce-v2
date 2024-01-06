@@ -1,4 +1,4 @@
-import CartList from '@/components/CartList'
+import CartList from '@/app/(root)/cart/CartList'
 import { Metadata } from 'next'
 import { FC } from 'react'
 

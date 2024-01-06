@@ -76,14 +76,7 @@ const HamburgerMenu:FC<HamburgerMenuProps>=({})=>{
                 </Link>
                 </li>
 
-                <li>
-                    <Button
-                        variant={"ghost"}
-                        className='w-min h-min p-0 text-base font-normal '
-                    >
-                        Log Out
-                    </Button>
-                </li>
+         
             </ul>
 
     </SheetContent>

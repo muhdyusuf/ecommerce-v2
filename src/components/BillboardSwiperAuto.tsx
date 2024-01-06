@@ -36,8 +36,8 @@ const BillboardSwiperAuto: FC<BillboardSwiperAutoProps> = ({
           >
             <Image
               src={billboard.imageUrl}
-              width={1000}
-              height={500}
+              width={1920}
+              height={1080}
               alt={billboard.label}
               className='absolute top-0 right-0 -z-10 w-full h-full object-cover'
             />

@@ -1,8 +1,10 @@
+
 import { FC } from 'react'
 import SearchInput from './SearchInput'
 import Link from 'next/link'
 import CartPopover from './CartPopover'
 import HamburgerMenu from './HamburgerMenu'
+import { User } from 'lucide-react'
 
   
 
@@ -27,16 +29,24 @@ const Navbar: FC<NavbarProps> = ({}) => {
                 home
             </Link>
             <SearchInput/>
-            <CartPopover />
+            <div
+                className='flex items-center gap-2 md:gap-4'
+            >
+                <CartPopover />
+                <Link
+                    href={"/myAccount"}
+                >
+                    <User/>
+                </Link>
+            </div>
 
 
 
-            
+
         </nav>
     </header>
-    
     </>
-   )
+   )        
 }
 
 export default Navbar

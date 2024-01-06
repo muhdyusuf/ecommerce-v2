@@ -56,7 +56,7 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange
 
   }
   const handleOnBlur = (e:ChangeEvent<HTMLInputElement>) => {
-    if(typeof value !=="number")return
+    if(typeof value !=="number"||value>0||value<maxValue)return
     
     setValue(1)
 

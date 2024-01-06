@@ -91,18 +91,18 @@ model Rating {
 }
 
 model Size {
-  id        Int       @id @default(autoincrement())
-  name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  product   Product[]
+  id          Int       @id @default(autoincrement())
+  name        String
+  createdAt   DateTime  @default(now())
+  description String    @default("")
+  updatedAt   DateTime  @updatedAt
+  product     Product[]
 }
 
 model User {
   id        Int        @id @default(autoincrement())
   username  String
-  email     String
-  password  String
+  email     String     @unique
   createdAt DateTime   @default(now())
   cartItem  CartItem[]
   order     Order[]

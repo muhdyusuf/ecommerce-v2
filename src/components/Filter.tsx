@@ -143,11 +143,6 @@ const Filter: FC<FilterProps> = ({close=()=>{}}) => {
          onSubmit={handleSubmit(onSubmit)}
          onReset={resetFilter}
      >
-        <legend
-          className='text-lg'
-        >
-          Search Filter
-        </legend>
         <fieldset
           className='flex flex-col gap-2'
         >
@@ -162,7 +157,6 @@ const Filter: FC<FilterProps> = ({close=()=>{}}) => {
               <PriceRangeInput
                 value={{...value}}
                 onChange={onChange}
-                watch={()=>watch("priceRange")}
                 trigger={()=>{trigger("priceRange")}}
               />  
             )}

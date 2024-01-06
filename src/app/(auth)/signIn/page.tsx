@@ -1,25 +1,22 @@
-import { Button, buttonVariants } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import {buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { signUpSchema } from '@/lib/validations/authForm'
-import { Github, Loader } from 'lucide-react'
+
 import Link from 'next/link'
 import { FC } from 'react'
-import { useForm } from 'react-hook-form'
 
-import {z} from 'Zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import SignUpForm from '@/components/SignUpForm'
-import SignInForm from '@/components/SignInForm'
+import SignInForm from '@/app/(auth)/signIn/SignInForm'
+import { URLSearchParams } from 'url'
 
 interface pageProps {
-  
+  searchParams:{
+    next?:string
+  }
+
 }
 
 
 
-const page: FC<pageProps> = ({}) => {
-
+const page: FC<pageProps> = ({searchParams}) => {
 
   return (
    <>
@@ -39,11 +36,11 @@ const page: FC<pageProps> = ({}) => {
               <h1 className="text-2xl font-semibold tracking-tight">
                 Login
               </h1>
-              <p className="text-sm text-muted-foreground">
+              {/* <p className="text-sm text-muted-foreground">
                 Enter your email below to continue
-              </p>
+              </p> */}
             </div>
-            <SignInForm />
+            <SignInForm redirectTo={searchParams.next}/>
             
             <p className="pt-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}

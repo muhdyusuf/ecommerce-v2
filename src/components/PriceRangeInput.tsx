@@ -11,7 +11,6 @@ type InputValue={
 interface PriceRangeInputProps {
   onChange:({}:InputValue)=>void,
   value:InputValue,
-  watch:(val:string)=>void
   trigger:()=>void
 
 }
@@ -19,7 +18,7 @@ interface PriceRangeInputProps {
 
 
 const PriceRangeInput: FC<PriceRangeInputProps> = (
-    {value,onChange,watch,trigger})=>{
+    {value,onChange,trigger})=>{
    
 
   return (

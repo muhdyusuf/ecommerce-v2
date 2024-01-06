@@ -1,14 +1,14 @@
 'use client'
-import {InfoPopover,InfoPopoverContent, InfoPopoverTrigger } from './InfoPopover'
-import { Popover, PopoverTrigger } from './ui/popover'
+import {InfoPopover,InfoPopoverContent, InfoPopoverTrigger } from '../../../components/InfoPopover'
+import { Popover, PopoverTrigger } from '../../../components/ui/popover'
 import { Checkbox } from "@/components/ui/checkbox"
 
 import {FC, SyntheticEvent, useEffect, useState } from 'react'
 
 
 import { PRICE_MULTIPLIER, cn, formatPrice } from '@/lib/utils'
-import { Button, buttonVariants } from './ui/button'
-import CartItem from './CartItem'
+import { Button, buttonVariants } from '../../../components/ui/button'
+import CartItem from '../../../components/CartItem'
 import { Loader2, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import useCart, { CartItemLocal } from '@/hooks/useCart'
