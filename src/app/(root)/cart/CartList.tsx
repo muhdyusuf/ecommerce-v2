@@ -82,8 +82,6 @@ const CartList: FC<CartListProps> = ({cartList}) => {
     },0)
     const paymentCharge=total*(3/100)
 
-
-    
    
   return cart.length===0?(
         <div

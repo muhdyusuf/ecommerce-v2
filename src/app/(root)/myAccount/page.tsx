@@ -6,6 +6,7 @@ import SignOutButton from '@/components/SignOutButton'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { Button, buttonVariants } from '@/components/ui/button'
+import { Order } from '@prisma/client'
 
 interface pageProps {
  
@@ -13,6 +14,15 @@ interface pageProps {
 
 const page:FC<pageProps>=async ({})=>{
     const user=await getUserDetails()
+    let orderList:Order[]=[]
+    if(user){
+        orderList=await prisma.order.findMany({
+            where:{
+                email:user.email
+            }
+        })
+    }
+
  return(
     <>
     <main
@@ -20,6 +30,9 @@ const page:FC<pageProps>=async ({})=>{
     >
         {user?(
             <div>
+                <p>
+                    {user?.user_metadata?.email}
+                </p>
                 <SignOutButton/>
             </div>
         ):(
@@ -43,7 +56,11 @@ const page:FC<pageProps>=async ({})=>{
         <div>
             {user?(
                 <ul>
-                    
+                   {orderList.map(order=>(
+                    <li>
+                        <p>{order.id}</p>
+                    </li>
+                   ))}
                 </ul>
             ):(
                 <Link

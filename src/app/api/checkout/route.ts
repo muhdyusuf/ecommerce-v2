@@ -2,6 +2,7 @@ import { stripe } from "@/lib/stripe"
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
 import prisma from "../../../../prisma/client"
+import { getUserDetails } from "@/app/supabase-server"
 
 
 const corsHeader={
@@ -20,7 +21,7 @@ const corsHeader={
         id:number,
         quantity:number
     }
-    const {cartItems}=await req.json()
+    const {cartItems,email}=await req.json()
     console.log(cartItems)
 
     if(!cartItems||cartItems.length===0){
@@ -57,27 +58,25 @@ const corsHeader={
 
     
     //create order
+    const user=await prisma.user.findUnique({
+        where:{
+            email:email
+        }
+    })
+    
     const createdOrder = await prisma.order.create({
         data: {
           cartItem: {
               create: cartItems.map(({ id, quantity }:{id:number,quantity:number}) => ({
               quantity,
               product: { connect: { id } },
-              user:{
-                connect:{
-                    id:1
-                }
-              }
               
             })),
           },
           total:productsWithQuantity.reduce((total,product)=>total+(product.price*product.quantity),0),
-            status:"pending",
-          user:{
-            connect:{
-                id:1
-            }
-          }
+          status:"pending",
+          
+
         },
         include: {
             cartItem:{
@@ -104,6 +103,7 @@ const corsHeader={
             }
         })
     })
+   
     
  
     try {
@@ -118,6 +118,7 @@ const corsHeader={
                 allowed_countries:["MY"],
                 
             },
+            customer_email:sessionUser?.email,
             success_url:`${process.env.NEXT_PUBLIC_APP_URL}/checkout?success=1`,
             cancel_url:`${process.env.NEXT_PUBLIC_APP_URL}/checkout?success=0`,
             metadata:{

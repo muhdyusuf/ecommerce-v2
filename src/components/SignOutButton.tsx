@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useToast } from './ui/use-toast'
 import { useState } from 'react'
 import { AuthError } from '@supabase/supabase-js'
-import { Loader2 } from 'lucide-react'
+import { Loader2, LogOut } from 'lucide-react'
 
 export default function SignOutButton() {
 
@@ -42,9 +42,15 @@ export default function SignOutButton() {
     <Button
       onClick={handleSignOut}
       disabled={loading}
+      className='p-1 h-auto text-muted-foreground flex gap-2'
+      variant={"outline"}
     >
-      {loading&&<Loader2 className='animate-spin mr-2'/>}
-      Sign out
+      {loading?(
+        <Loader2 className='animate-spin mr-2'/>
+        ):(
+        <LogOut size={15}/>
+      )}
+      sign out
     </Button>
 
   )
