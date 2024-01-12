@@ -18,7 +18,8 @@ const page:FC<pageProps>=async ({})=>{
     if(user){
         orderList=await prisma.order.findMany({
             where:{
-                email:user.email
+                email:user.email,
+                status:"paid"
             }
         })
     }

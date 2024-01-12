@@ -22,7 +22,7 @@ const corsHeader={
         quantity:number
     }
     const {cartItems,email}=await req.json()
-    console.log(cartItems)
+    console.log(cartItems,email)
 
     if(!cartItems||cartItems.length===0){
         return NextResponse.json("Product id Require",{status:400})
@@ -58,11 +58,12 @@ const corsHeader={
 
     
     //create order
-    const user=await prisma.user.findUnique({
+    const user=email?await prisma.user.findUnique({
         where:{
             email:email
         }
-    })
+    }):null
+    console.log(user)
     
     const createdOrder = await prisma.order.create({
         data: {
@@ -75,13 +76,16 @@ const corsHeader={
           },
           total:productsWithQuantity.reduce((total,product)=>total+(product.price*product.quantity),0),
           status:"pending",
-          
-
+          userId:user?user.id:null,
+          email:user?user.email:""
+         
+        
         },
         include: {
             cartItem:{
                 include:{
-                    product:true
+                    product:true,
+                    user:true
                 }
             }
         },
@@ -118,7 +122,7 @@ const corsHeader={
                 allowed_countries:["MY"],
                 
             },
-            customer_email:sessionUser?.email,
+            customer_email:user?.email,
             success_url:`${process.env.NEXT_PUBLIC_APP_URL}/checkout?success=1`,
             cancel_url:`${process.env.NEXT_PUBLIC_APP_URL}/checkout?success=0`,
             metadata:{

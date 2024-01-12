@@ -13,6 +13,7 @@ import { Loader2, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import useCart, { CartItemLocal } from '@/hooks/useCart'
 import { useRouter } from 'next/navigation'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
   
 
 interface CartListProps {
@@ -50,10 +51,13 @@ const CartList: FC<CartListProps> = ({cartList}) => {
 
     async function handleCheckout(event:SyntheticEvent){
         event.preventDefault()
+        const supabase=createClientComponentClient()
+        const {data:{user}}=await supabase.auth.getUser()
         const response=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/checkout`,{
           method:"POST",
           body:JSON.stringify({
-              cartItems:cart.filter(item=>item.selected).map(({id,quantity})=>({id,quantity:quantity||1}))
+              cartItems:cart.filter(item=>item.selected).map(({id,quantity})=>({id,quantity:quantity||1})),
+              email:user?.email
         })
         })
       

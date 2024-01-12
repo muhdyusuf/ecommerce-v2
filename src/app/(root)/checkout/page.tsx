@@ -57,9 +57,6 @@ const page: FC<pageProps> = ({searchParams}) => {
     
     
     
-    
-  
-    
   return(
     <main
       className='md:container h-full flex justify-center'

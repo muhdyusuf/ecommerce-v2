@@ -12,7 +12,10 @@ interface OrderTrackerForm {
  
 }
 const OrderTrackerSchema=z.object({
-    orderId:z.number().min(1),
+    orderId:z.preprocess(
+      (a) => parseInt(z.string().parse(a), 10),
+      z.number().positive().min(1)
+      ),
     email:z.string().email()
 })
 
@@ -25,6 +28,10 @@ const OrderTrackerForm:FC<OrderTrackerForm>=({})=>{
  
     const form=useForm<IOrderTrackerForm>({
         resolver:zodResolver(OrderTrackerSchema),
+        defaultValues:{
+          orderId:0,
+          email:""
+        }
    
       })
 
@@ -46,11 +53,11 @@ const OrderTrackerForm:FC<OrderTrackerForm>=({})=>{
           <FormField
             control={form.control}
             name="orderId"
-            render={({ field }) => (
+            render={({field}) => (
               <FormItem>
                 <FormLabel>Order Id</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter Order Id" {...field}/>
+                  <Input placeholder="Enter Order Id" {...field}  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
