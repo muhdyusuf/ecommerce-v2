@@ -25,7 +25,7 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange
       setValue(1)
       onChange(1)
     }
-    else if(value>maxValue){
+    else if(value&&value>maxValue){
       setValue(maxValue)
       onChange(maxValue)
     }
@@ -52,7 +52,7 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange
 
   const handleInputChange = (e:ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(e.target.value)
-    setValue(newValue)
+    setValue(newValue&&undefined)
 
   }
   const handleOnBlur = (e:ChangeEvent<HTMLInputElement>) => {
