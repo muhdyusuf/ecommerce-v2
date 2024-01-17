@@ -73,7 +73,7 @@ const ProductCard:FC<ProductCardProps>=({product,className})=>{
                     className='w-full'
                 >
                 <h3
-                    className='line-clamp-1 font-black capitalize w-full'
+                    className='line-clamp-2 font-black capitalize w-full'
                     >
                     {product.name}
                 </h3>

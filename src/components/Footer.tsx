@@ -8,7 +8,7 @@ interface FooterProps {
 const Footer: FC<FooterProps> = ({}) => {
   return (
    <footer
-    className='text-sm bg-primary/10 mb-0 pb-0 h-screen w-full'
+    className='text-sm bg-primary/10 mb-0 pb-0 w-full'
    >
      <div
         className='md:container flex flex-wrap justify-between gap-4 py-4'

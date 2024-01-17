@@ -1,3 +1,4 @@
+import { useToast } from '@/components/ui/use-toast'
 import { create } from 'zustand'
 import {persist,createJSONStorage} from 'zustand/middleware'
 
@@ -37,8 +38,9 @@ const useCart = create(
             set({cart:currentItems})
             return
            }
-
+         
            set({cart:[data,...currentItems]})
+           
         },
         updateItem:(data:CartItemLocal)=>{
             const currentItems=get().cart

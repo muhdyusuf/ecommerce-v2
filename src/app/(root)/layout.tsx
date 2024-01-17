@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer"
 import Navbar from "@/components/Navbar"
+import { Toaster } from "@/components/ui/toaster"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
       <>
         <Navbar/>
         {children}
+        <Toaster/>
         <Footer/>
       </>
     )

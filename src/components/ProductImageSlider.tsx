@@ -133,8 +133,29 @@ const ProductImageSlider: FC<ProductImageSliderProps> = ({images,className,image
 
   return (
     <div
-      className='w-full relative bg-background'
+      className={cn('grid grid-cols-[100px,500px] overflow-hidden',
+      className)}
     >
+    <div
+
+    >
+      {images.map((image,index)=>(
+        <Image
+          src={image}
+          width={100}
+          height={100}
+          alt={image}
+          className={cn(
+            currentIndex===index&&"brightness-[0.3]",
+            "object-cover w-full h-auto aspect-square rounded-sm",
+          )}
+          onClick={()=>swiperRef.current?.swiper.slideTo(index)}
+        />
+
+   
+      ))}
+    </div>
+
     <Swiper
       className={cn("relative",className)}
       onSlideChange={(slide)=>{
@@ -145,7 +166,7 @@ const ProductImageSlider: FC<ProductImageSliderProps> = ({images,className,image
       {images.map(image=>(
         <SwiperSlide
           key={crypto.randomUUID()}
-          className='w-full'
+          className='w-full h-auto aspect-square'
 
         >
           <Image
@@ -153,37 +174,18 @@ const ProductImageSlider: FC<ProductImageSliderProps> = ({images,className,image
             height={imageSize||300}
             alt="photo"
             src={image}
-            className='w-full h-auto aspect-square object-cover'
+            className='w-full h-full object-cover'
             />
-        </SwiperSlide>
-      ))}
-      
-    <div
-      className='absolute bottom-0 right-0 m-4 bg-white/80 shadow-md rounded-full p-1 px-2 z-50'
+            <div
+            className='absolute bottom-0 right-0 m-4 bg-white/80 shadow-md rounded-full p-1 px-2 z-50'
     >
       {`${currentIndex+1}/${images.length}`}
     </div>
-    </Swiper>
-    <div
-      className='grid grid-cols-4 bg-background gap-1 mt-1'
-    >
-      {images.map((image,index)=>(
-        <Image
-          key={index+image}
-          src={image}
-          width={100}
-          height={100}
-          alt={image}
-          className={cn(
-            currentIndex===index&&"opacity-70 outline outline-2 outline-muted-foreground outline-offset-2",
-            "object-cover w-full h-auto aspect-square rounded-md",
-          )}
-          onClick={()=>swiperRef.current?.swiper.slideTo(index)}
-        />
-
-   
+        </SwiperSlide>
       ))}
-    </div>
+      
+    
+    </Swiper>
     </div>
    )
 }

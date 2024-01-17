@@ -203,7 +203,7 @@ const page: FC<pageProps> = async ({searchParams}) => {
           </div>
 
           <div
-          className='grid grid-cols-[repeat(auto-fit,min(50%,200px))] md:justify-start md:gap-4 w-full bg-secondary'
+          className='grid grid-cols-[repeat(auto-fit,min(50%,200px))] md:justify-start md:gap-4 w-full '
           >
           {products.map((product)=>(
             <ProductCart

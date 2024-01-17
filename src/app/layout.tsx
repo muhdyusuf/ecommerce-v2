@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body 
-        className={cn("flex flex-col gap-6",
+        className={cn("flex flex-col justify-between gap-6 min-h-screen ",
         inter.className
         )} 
         suppressHydrationWarning={true}>
@@ -30,11 +30,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-
-
-           {children}
-
-            <Toaster/>
+            {children}
+       
           </ThemeProvider>
 
       </body>

@@ -18,47 +18,48 @@ interface QuantityInputProps{
 
 const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange,className,maxValue}) => {
 
-  const [value, setValue] = useState<number|undefined>(defaultValue||1)
+  const [value, setValue] = useState<string>(defaultValue.toString()||"1")
 
   useEffect(()=>{
-    if(value===undefined){
-      setValue(1)
-      onChange(1)
-    }
-    else if(value&&value>maxValue){
-      setValue(maxValue)
-      onChange(maxValue)
-    }
-    else{
-      onChange(value)
-    }
-
+    onChange(Number(value))
   },[value])
 
   const increment = () => {
-    
-    const newValue = value?value + 1:1
-    if(newValue>=1000000)return
-    setValue(newValue)
-
+    const newValue=Number(value)+1
+    if(newValue>maxValue){
+      setValue(maxValue.toString())
+    }
+    else if(newValue<=maxValue){
+      setValue(newValue.toString())
+    }
+    else{
+      setValue("0")
+    }
   }
   const decrement = () => {
-    if (typeof value==="number" && value > 1) {
-      const newValue = value - 1
-      setValue(newValue)
- 
+    const newValue=Number(value)-1
+    if(newValue>=0){
+      setValue(newValue.toString())
+    }
+    else{
+      setValue("0")
     }
   }
 
   const handleInputChange = (e:ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseInt(e.target.value)
-    setValue(newValue&&undefined)
-
+    setValue(e.target.value)
   }
+
   const handleOnBlur = (e:ChangeEvent<HTMLInputElement>) => {
-    if(typeof value !=="number"||value>0||value<maxValue)return
-    
-    setValue(1)
+   const newValue=Number(e.target.value)
+   if(newValue&&newValue<=maxValue)return
+
+    if(newValue&&newValue>maxValue){
+      setValue(maxValue.toString())
+    }
+    else{
+      setValue("1")
+    }
 
   }
 
@@ -73,6 +74,7 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange
         name='button-deduct-quantity'
         className={cn("p-0 w-full h-auto aspect-square")}
         onClick={decrement}
+        disabled={Number(value)<=1}
       
         >
         <Minus strokeWidth={4} className='text-muted-foreground w-3'/>
@@ -95,6 +97,7 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange
         name='button-add-quantity'
         className={cn("p-0 w-full h-auto aspect-square")}
         onClick={increment}
+        disabled={Number(value)>=maxValue}
      
         >
         <Plus strokeWidth={4} className='text-muted-foreground w-3'/>

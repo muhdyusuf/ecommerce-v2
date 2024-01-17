@@ -1,14 +1,14 @@
 'use client'
 
 import { FC, useEffect, useState } from 'react'
-import { Button, buttonVariants } from './ui/button'
+import { Button, buttonVariants } from '../../../../components/ui/button'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-import { Input } from './ui/input'
+import { Input } from '../../../../components/ui/input'
 import { Minus, Plus } from 'lucide-react'
-import { useToast } from './ui/use-toast'
-import { ToastAction } from './ui/toast'
-import { QuantityInput } from './QuantityInput'
+import { useToast } from '../../../../components/ui/use-toast'
+import { ToastAction } from '../../../../components/ui/toast'
+import { QuantityInput } from '../../../../components/QuantityInput'
 import { Category, Colour, Product, Size } from '@prisma/client'
 import useCart from '@/hooks/useCart'
 import { useRouter } from 'next/navigation'
@@ -47,9 +47,13 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
 
     async function handleAddToCart(){
        addItem(formattedCart)
+       toast({
+        title:`Item Added to your car`,
+       })
     }
     function handleQuantity(val:number){
-      if(product.stock<=val){
+    
+      if(val<=product.stock){
         setQuantity(val)
       }
       else{
@@ -63,33 +67,50 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
       })
       addItem(formattedCart)
       router.push(`${process.env.NEXT_PUBLIC_APP_URL}/cart`)
+
     }
+    console.log(quantity)
 
   return (
-  <div>
-    
-      <QuantityInput
-        className='w-32 grid grid-cols-3'
-        defaultValue={quantity}
-        onChange={handleQuantity}
-        maxValue={product.stock}
-      />
-   
+  <div
+    className='flex flex-col gap-4 '
+  >
+     <div
+      className='w-full flex items-center gap-4'
+     >
+        <QuantityInput
+          className='w-36 gap-1 grid grid-cols-[auto,4rem,auto] items-center'
+          defaultValue={quantity}
+          onChange={handleQuantity}
+          maxValue={product.stock}
+          />
 
-    <Button
-      type='button'
-      variant={"secondary"}
-      onClick={handleAddToCart}
+          <p
+            className='text-sm text-muted-foreground font-medium'
+          >
+            {product.stock} available
+          </p>
+      </div>
+
+      <div
+        className='flex gap-2'
       >
-      Add to cart
-    </Button>
+          <Button
+            type='button'
+            variant={"secondary"}
+            onClick={handleAddToCart}
+            >
+            Add to cart
+          </Button>
 
-    <Button
-      className=''
-      onClick={handleBuyNow}      
-    > 
-      Buy Now
-    </Button>
+          <Button
+            className='w-[min(100%,200px)]'
+            onClick={handleBuyNow}      
+            > 
+            Buy Now
+          </Button>
+      </div>
+      
     </div>
    )
 }

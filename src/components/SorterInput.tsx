@@ -153,10 +153,11 @@ const SorterInput: FC<SorterInputProps> = ({}) => {
         value={sorter}
         onValueChange={(val)=>setSorter(val)}
     >
-        <SelectTrigger className={"w-[180px]"}>
+        <SelectTrigger className={"w-[180px] mb-4"}>
             <SelectValue placeholder="Sort By" />
         </SelectTrigger>
         <SelectContent>
+            
             
             {sortByArr.map(sortBy=>(
                 <SelectItem 
