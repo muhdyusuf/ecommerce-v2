@@ -5,7 +5,7 @@ import { useSearchParams,useRouter} from 'next/navigation'
 import qs from 'querystring'
 
 import { sortBySchema } from '@/lib/validations/urlquery'
-import {z} from 'Zod'
+import {z} from 'zod'
 import {
     Select,
     SelectContent,
