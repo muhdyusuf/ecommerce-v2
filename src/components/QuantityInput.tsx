@@ -19,33 +19,35 @@ interface QuantityInputProps{
 const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange,className,maxValue}) => {
 
   const [value, setValue] = useState<string>(defaultValue.toString()||"1")
-  useEffect(()=>{
-    setValue(defaultValue.toString())
-  },[defaultValue])
+ 
 
-  useEffect(()=>{
-    onChange(Number(value))
-  },[value,onChange])
+  
 
   const increment = () => {
     const newValue=Number(value)+1
     if(newValue>maxValue){
       setValue(maxValue.toString())
+      onChange(maxValue)
     }
     else if(newValue<=maxValue){
       setValue(newValue.toString())
+      onChange(newValue)
     }
     else{
-      setValue("0")
+      setValue("1")
+      onChange(1)
     }
   }
   const decrement = () => {
     const newValue=Number(value)-1
     if(newValue>=0){
       setValue(newValue.toString())
+      onChange(newValue)
     }
     else{
-      setValue("0")
+      setValue("1")
+      onChange(1)
+
     }
   }
 
@@ -59,9 +61,11 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange
 
     if(newValue&&newValue>maxValue){
       setValue(maxValue.toString())
+      onChange(maxValue)
     }
     else{
       setValue("1")
+      onChange(1)
     }
 
   }

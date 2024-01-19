@@ -9,10 +9,9 @@ export async function middleware(req:NextRequest) {
       const {data:{user}}=await supabase.auth.getUser()
       
     
-    if(user&&req.nextUrl.pathname==="/signIn"){
-        console.log("redirect by middleWare")
-        return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}`)
-    }
+    // if(user&&req.nextUrl.pathname==="/signIn"){
+    //     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_APP_URL}`)
+    // }
     
 
     return res

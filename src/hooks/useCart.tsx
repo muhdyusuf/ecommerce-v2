@@ -22,6 +22,9 @@ interface CartStore {
     removeItem:(id:number)=>void
     updateItem:(data:CartItemLocal)=>void
     removeAllItem:()=>void
+    selectAll:()=>void
+    unSelectAll:()=>void
+    
         
 }
 
@@ -51,6 +54,14 @@ const useCart = create(
                 set({cart:[...currentItems]})
             }
             
+        },
+        selectAll:()=>{
+            const currentItems=get().cart
+            set({cart:currentItems.map(item=>({...item,selected:true}))})
+        },
+        unSelectAll:()=>{
+            const currentItems=get().cart
+            set({cart:currentItems.map(item=>({...item,selected:false}))})
         },
         removeItem:(id)=>{
             const currentItem=get().cart

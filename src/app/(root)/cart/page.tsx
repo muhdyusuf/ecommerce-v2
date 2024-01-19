@@ -3,10 +3,7 @@ import { Metadata } from 'next'
 import { FC } from 'react'
 
 interface pageProps {
-  searchParams:{
 
-  },
-  params:string
 }
 
 export const metadata: Metadata = {
@@ -14,7 +11,7 @@ export const metadata: Metadata = {
   description: 'mock e commerce',
 }
 
-const Page: FC<pageProps> = async({searchParams,params}) => {
+const Page: FC<pageProps> = async({}) => {
 
 
   return (

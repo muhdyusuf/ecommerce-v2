@@ -1,5 +1,5 @@
 import {ChangeEvent, FC, useEffect} from 'react'
-import { Button, buttonVariants } from './ui/button'
+import { Button, buttonVariants } from '../../../components/ui/button'
 
 //ui
 import {
@@ -14,31 +14,28 @@ import {
    AlertDialogTrigger,
  } from "@/components/ui/alert-dialog"
 import Image from 'next/image'
-import { QuantityInput } from './QuantityInput'
+import { QuantityInput } from '../../../components/QuantityInput'
 import { PRICE_MULTIPLIER, cn, formatPrice } from '@/lib/utils'
-import { Trash, Trash2, X } from 'lucide-react'
+import { Trash2} from 'lucide-react'
 import Link from 'next/link'
-import { Input } from './ui/input'
+
 import useCart, { CartItemLocal } from '@/hooks/useCart'
-import { Checkbox } from './ui/checkbox'
+import { Checkbox } from '../../../components/ui/checkbox'
  
 
 interface CartItemProps {
    cartItem:CartItemLocal
-   onSelected:(val:boolean)=>void
    className?:string
+   onCheckedChange:(val:boolean)=>void
 }
 
-const CartItem:FC<CartItemProps>=({className,cartItem,onSelected=()=>{}})=>{
-   const {cart,updateItem,removeItem}=useCart()
+const CartItem:FC<CartItemProps>=({className,cartItem,onCheckedChange})=>{
+   const {updateItem,removeItem}=useCart()
    
-  
    function handleSetQuantity(val:number){
      updateItem({...cartItem,quantity:val})
    }
-   function handleSetSelected(checked:boolean){
-      onSelected(checked)
-   }
+   
 
    
      
@@ -82,7 +79,7 @@ const CartItem:FC<CartItemProps>=({className,cartItem,onSelected=()=>{}})=>{
                      name={cartItem.name+"selected"}
                      id={cartItem.id+"selected"}
                      checked={cartItem.selected}
-                     onCheckedChange={handleSetSelected}
+                     onCheckedChange={onCheckedChange}
                   />  
                </div>
                <ul

@@ -1,142 +1,101 @@
 'use client'
-import {InfoPopover,InfoPopoverContent, InfoPopoverTrigger } from '../../../components/InfoPopover'
-import { Popover, PopoverTrigger } from '../../../components/ui/popover'
-import { Checkbox } from "@/components/ui/checkbox"
-
-import {FC, SyntheticEvent, useEffect, useState } from 'react'
-
-
-import { PRICE_MULTIPLIER, cn, formatPrice } from '@/lib/utils'
-import { Button, buttonVariants } from '../../../components/ui/button'
-import CartItem from '../../../components/CartItem'
-import { Loader2, ShoppingBag } from 'lucide-react'
-import Link from 'next/link'
-import useCart, { CartItemLocal } from '@/hooks/useCart'
-import { useRouter } from 'next/navigation'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { validateLocalCartItems } from '@/actions/cart'
-import { useToast } from '@/components/ui/use-toast'
-  
+import { getUserDetails } from '@/app/supabase-server'
+
+import { InfoPopoverContent, InfoPopoverTrigger } from '@/components/InfoPopover'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Popover } from '@/components/ui/popover'
+import useCart from '@/hooks/useCart'
+import { PRICE_MULTIPLIER, formatPrice } from '@/lib/utils'
+
+import { Link, Loader2, ShoppingBag } from 'lucide-react'
+import {FC, SyntheticEvent, useEffect, useMemo, useState} from 'react'
+import CartItem from './CartItem'
 
 interface CartListProps {
-  cartList?:CartItemLocal[]
+ 
 }
 
-const CartList: FC<CartListProps> = ({cartList}) => {
+const CartList:FC<CartListProps>=({})=>{
     const [isMounted, setIsMounted] = useState(false)
-    const {cart,updateItem,removeItem}=useCart()
-    const [isAllSelected, setIsAllSelected] = useState(false)
-    const [updatedId,setUpdatedId]=useState<number[]>([])
     const [loading,setLoading]=useState(false)
-
-    const router=useRouter()
-    const {toast}=useToast()
-
-    function handleAllSelected(val:boolean){
-        if(val){
-            cart.map(product=>updateItem({...product,selected:true}))
-        }
-        else{
-            cart.map(product=>updateItem({...product,selected:false}))
-        }
-        setIsAllSelected(Boolean(val))
-        
-    }
-
-    function handleItemSelected(cartItem:CartItemLocal,selected:boolean){
-        updateItem({...cartItem,selected})
-        const isAllSelected=cart.every(cartItem=>cartItem.selected)
-        setIsAllSelected(isAllSelected)
-    }
-    
-    
-    useEffect(() => {
-        setIsMounted(true)
-        const isAllSelected=cart.every(cartItem=>cartItem.selected)
-        setIsAllSelected(isAllSelected)
-    }, [cart])
+    const [updatedId, setUpdatedId] = useState<number[]>([])
 
     useEffect(()=>{
-        if(updatedId.length===0)return
-        const timer=setTimeout(()=>setUpdatedId([]),5000)
-        return()=>{
-            clearTimeout(timer)
-        }
-    },[updatedId])
+        setIsMounted(true)
+    },[])
 
-    
+    const {cart,updateItem,removeItem,selectAll,unSelectAll}=useCart()
+    const isAllSelected=useMemo(()=>cart.every(item=>item.selected), [cart])
 
-   
+    const total=useMemo(()=>cart.reduce((total,cartItem)=>{
+        if(!cartItem.selected)return total
+        const cartItemTotal=(cartItem.price*PRICE_MULTIPLIER)*cartItem.quantity
+        return((total*PRICE_MULTIPLIER)+cartItemTotal)/PRICE_MULTIPLIER
+        },0)
+    ,[cart])
+
+    const paymentCharge=total*(3/100)
 
     async function handleCheckout(event:SyntheticEvent){
-        event.preventDefault()
-        setLoading(true)
-        const supabase=createClientComponentClient()
-        const {data:{user}}=await supabase.auth.getUser()
+    event.preventDefault()
+    setLoading(true)
 
-        const selectedItem=cart.filter(item=>item.selected)
+    const user=await getUserDetails()
 
-        const validatedCartList=await validateLocalCartItems(selectedItem)
+    const selectedItem=cart.filter(item=>item.selected)
 
-       
-        const _upadatedId:number[]=[]
-        validatedCartList.map(cartItem=>{
-            if(!cartItem)return
-            const product=selectedItem.find(item=>cartItem.id===item.id)
-            
-            if(!product){
-                removeItem(cartItem.id)
-            }
-            else if(product.quantity!==cartItem.quantity){
-                updateItem({...product,...cartItem})
-                _upadatedId.push(product.id)
-            }
-        })
-        if(_upadatedId.length>0){
-            setUpdatedId(_upadatedId)
-            toast({
-                title:'some item have been updated'
-            })
-            setLoading(false)
-            return
+    const validatedCartList=await validateLocalCartItems(selectedItem)
+
+    
+    const _upadatedId:number[]=[]
+    validatedCartList.map(cartItem=>{
+        if(!cartItem)return
+        const product=selectedItem.find(item=>cartItem.id===item.id)
+        
+        if(!product){
+            removeItem(cartItem.id)
         }
-
-        const response=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/checkout`,{
-          method:"POST",
-          body:JSON.stringify({
-              cartItems:cart.filter(item=>item.selected).map(({id,quantity})=>({id,quantity:quantity||1})),
-              email:user?.email
-        })
-        })
-      
-        if(response.status===200){
-            setLoading(false)
-          const {url}=await response.json()
-          window.location=url
+        else if(product.quantity!==cartItem.quantity){
+            updateItem({...product,...cartItem})
+            _upadatedId.push(product.id)
         }
-      }
+    })
+    if(_upadatedId.length>0){
+        setUpdatedId(_upadatedId)
+        toast({
+            title:'some item have been updated'
+        })
+        setLoading(false)
+        return
+    }
 
-    if(!isMounted)return(
+    const response=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/checkout`,{
+        method:"POST",
+        body:JSON.stringify({
+            cartItems:cart.filter(item=>item.selected).map(({id,quantity})=>({id,quantity:quantity||1})),
+            email:user?.email
+    })
+    })
+    
+    if(response.status===200){
+        setLoading(false)
+        const {url}=await response.json()
+        window.location=url
+    }
+    }
+
+    return !isMounted?(
         <div
             className='m-auto flex justify-center'
         >
             <Loader2
                 className='animate-spin stroke-muted-foreground'
                 size={50}
-            />
+                />
         </div>
-    )
-
-
-   const total=cart.reduce((total,cartItem)=>{
-    if(!cartItem.selected)return total
-    const cartItemTotal=(cartItem.price*PRICE_MULTIPLIER)*cartItem.quantity
-    return((total*PRICE_MULTIPLIER)+cartItemTotal)/PRICE_MULTIPLIER
-    },0)
-    const paymentCharge=total*(3/100)
-
-   
-  return cart.length===0?(
+    ):cart.length===0?(
         <div
         className='outline-dashed outline-6 outline-secondary rounded-md w-full  flex flex-col justify-center items-center text-center'
         >
@@ -157,8 +116,7 @@ const CartList: FC<CartListProps> = ({cartList}) => {
                 Explore Products
             </Link>
         </div>
-
-        ):(
+    ):(
         <div
             className='relative w-[min(100%,1000px)] flex flex-col md:flex-row gap-8'
         >
@@ -175,25 +133,26 @@ const CartList: FC<CartListProps> = ({cartList}) => {
                     className='flex justify-end gap-1 items-end leading-none px-2'
                 >    
                     Select All 
-                    <Checkbox 
+                    <Checkbox
                         name="select all cart item" 
                         id="cartSelectAll"
                         checked={isAllSelected}
-                        onCheckedChange={handleAllSelected}
-                
+                        onCheckedChange={isAllSelected?unSelectAll:selectAll}
+               
                     /> 
                 </label>
                 <div
                     className='col-span-full '
                 >
                     {cart.map(cartItem=>(
-                        <CartItem 
-                            className={updatedId.includes(cartItem.id)?"bg-orange-100/40":""}
-                            key={cartItem.id} 
+                        <CartItem
+                            key={"cartItem"+cartItem.id}
                             cartItem={cartItem}
-                            onSelected={(selected=>handleItemSelected(cartItem,selected))}
+                            onCheckedChange={(val)=>updateItem({...cartItem,selected:val})}
+                        
                         />
                     ))}
+                    
                 </div>
             </div>
             <div
@@ -262,7 +221,7 @@ const CartList: FC<CartListProps> = ({cartList}) => {
                 >
                     <Button
                         type='button'
-                        disabled={cart.every(cart=>!cart.selected)||loading}
+                        disabled={isAllSelected||loading}
                         onClick={handleCheckout}
                     >
                         
@@ -277,10 +236,8 @@ const CartList: FC<CartListProps> = ({cartList}) => {
             </div>
 
             </div>
-        )
-    }
-  
-  
+    )
 
+}
 
 export default CartList
