@@ -18,7 +18,7 @@ const OrderCard:FC<OrderCardProps>=({order})=>{
     <Card>
         <CardHeader>
             <CardTitle>
-    	        {`order #${order.id}`}
+    	        {`Order #${order.id}`}
             </CardTitle>
         
         </CardHeader>
@@ -46,12 +46,20 @@ const OrderCard:FC<OrderCardProps>=({order})=>{
                             <p>
                                 x{item.quantity}
                             </p>
+                            <p
+                                className={`text-sm text-muted-foreground ${item.quantity<2&&"hidden"}`}
+                            >
+                                {formatPrice(item.product.price)}/unit
+                            </p>
                         </div>
-                        <p 
+                        
+                        <p
                             className='justify-self-end'
                         >
                             {formatPrice(item.product.price*item.quantity)}
                         </p>
+                            
+                        
                     </li>
                 ))}
             </ul>

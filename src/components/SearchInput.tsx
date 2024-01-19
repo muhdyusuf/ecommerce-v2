@@ -23,7 +23,7 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
         const search=searchParams.get('search')
         if(!search)return
         setInputValue(search)
-    },[])
+    },[searchParams])
     
     const router=useRouter()
     

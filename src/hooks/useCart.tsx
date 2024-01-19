@@ -36,10 +36,10 @@ const useCart = create(
             currentItems[existingItems].quantity+=data.quantity
             currentItems[existingItems].selected=true
             set({cart:currentItems})
-            return
            }
-         
-           set({cart:[data,...currentItems]})
+           else{
+               set({cart:[data,...currentItems]})
+           }
            
         },
         updateItem:(data:CartItemLocal)=>{
@@ -48,7 +48,7 @@ const useCart = create(
             
             if(existingItems>=0){
                 currentItems[existingItems]=data
-                set({cart:currentItems})
+                set({cart:[...currentItems]})
             }
             
         },

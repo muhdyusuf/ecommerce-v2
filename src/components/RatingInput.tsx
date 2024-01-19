@@ -27,7 +27,7 @@ const RatingInput: FC<RatingInputProps> = ({onChange,value,watch}) => {
     }
     useEffect(()=>{
         setSelected(value)
-    },[watch])
+    },[watch,value])
   return (
    <div>
        <Button

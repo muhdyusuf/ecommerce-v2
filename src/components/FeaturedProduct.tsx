@@ -14,34 +14,41 @@ const FeaturedProduct:FC<FeaturedProductProps>=async({className,productId})=>{
 
     const featuredProducts=await prisma.product.findMany({
         where:{
-            ...whereCondition
-        },
-        include:{
-            rating:true
+            ...whereCondition,
+            isArchived:false,
+            stock:{
+              gte:1
+            }
         },
         take:10
     })
  
     return(
       <section
-        className={cn("bg-secondary",className)}
+        className={cn("bg-secondary my-8",className)}
       >
         <div
-          className='md:container py-6'
+          className='md:container flex flex-col py-10 md:gap-8 gap-4'
           >
             <div
-              className='flex flex-col md:flex-row md:justify-center md:items-center gap-6'
+              className='flex flex-col justify-center items-center gap-4'
               >
-            <h2
-              className='md:text-6xl text-2xl font-bold'
+              <h2
+                className='text-4xl font-bold'
+                >
+                Featured
+              </h2>
+              <p
+                className='w-[min(100%,600px)] text-center'
               >
-              Featured
-            </h2>
-            <ProductSWiper
-                products={featuredProducts}
-                className='w-full'
-            />
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.Minus iure voluptates ab laudantium soluta vitae natus reprehenderit blanditiis dolorum nam!
+              </p>
           </div>
+
+          <ProductSWiper
+              products={featuredProducts}
+              className='w-full'
+          />
   
         </div>
       </section>

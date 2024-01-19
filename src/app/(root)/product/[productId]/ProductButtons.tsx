@@ -93,7 +93,7 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
       </div>
 
       <div
-        className='flex gap-2'
+        className='flex flex-col gap-4'
       >
           <Button
             type='button'
@@ -104,7 +104,6 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
           </Button>
 
           <Button
-            className='w-[min(100%,200px)]'
             onClick={handleBuyNow}      
             > 
             Buy Now

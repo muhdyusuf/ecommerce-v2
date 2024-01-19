@@ -14,16 +14,23 @@ import Link from 'next/link'
 import useCart, { CartItemLocal } from '@/hooks/useCart'
 import { useRouter } from 'next/navigation'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { validateLocalCartItems } from '@/actions/cart'
+import { useToast } from '@/components/ui/use-toast'
   
 
 interface CartListProps {
-  cartList?:CartList
+  cartList?:CartItemLocal[]
 }
 
 const CartList: FC<CartListProps> = ({cartList}) => {
     const [isMounted, setIsMounted] = useState(false)
-    const {cart,updateItem}=useCart()
+    const {cart,updateItem,removeItem}=useCart()
     const [isAllSelected, setIsAllSelected] = useState(false)
+    const [updatedId,setUpdatedId]=useState<number[]>([])
+    const [loading,setLoading]=useState(false)
+
+    const router=useRouter()
+    const {toast}=useToast()
 
     function handleAllSelected(val:boolean){
         if(val){
@@ -47,12 +54,53 @@ const CartList: FC<CartListProps> = ({cartList}) => {
         setIsMounted(true)
         const isAllSelected=cart.every(cartItem=>cartItem.selected)
         setIsAllSelected(isAllSelected)
-    }, [])
+    }, [cart])
+
+    useEffect(()=>{
+        if(updatedId.length===0)return
+        const timer=setTimeout(()=>setUpdatedId([]),5000)
+        return()=>{
+            clearTimeout(timer)
+        }
+    },[updatedId])
+
+    
+
+   
 
     async function handleCheckout(event:SyntheticEvent){
         event.preventDefault()
+        setLoading(true)
         const supabase=createClientComponentClient()
         const {data:{user}}=await supabase.auth.getUser()
+
+        const selectedItem=cart.filter(item=>item.selected)
+
+        const validatedCartList=await validateLocalCartItems(selectedItem)
+
+       
+        const _upadatedId:number[]=[]
+        validatedCartList.map(cartItem=>{
+            if(!cartItem)return
+            const product=selectedItem.find(item=>cartItem.id===item.id)
+            
+            if(!product){
+                removeItem(cartItem.id)
+            }
+            else if(product.quantity!==cartItem.quantity){
+                updateItem({...product,...cartItem})
+                _upadatedId.push(product.id)
+            }
+        })
+        if(_upadatedId.length>0){
+            setUpdatedId(_upadatedId)
+            toast({
+                title:'some item have been updated'
+            })
+            setLoading(false)
+            return
+        }
+
         const response=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/checkout`,{
           method:"POST",
           body:JSON.stringify({
@@ -62,6 +110,7 @@ const CartList: FC<CartListProps> = ({cartList}) => {
         })
       
         if(response.status===200){
+            setLoading(false)
           const {url}=await response.json()
           window.location=url
         }
@@ -135,10 +184,11 @@ const CartList: FC<CartListProps> = ({cartList}) => {
                     /> 
                 </label>
                 <div
-                    className='col-span-full'
+                    className='col-span-full '
                 >
                     {cart.map(cartItem=>(
                         <CartItem 
+                            className={updatedId.includes(cartItem.id)?"bg-orange-100/40":""}
                             key={cartItem.id} 
                             cartItem={cartItem}
                             onSelected={(selected=>handleItemSelected(cartItem,selected))}
@@ -188,11 +238,9 @@ const CartList: FC<CartListProps> = ({cartList}) => {
                             <InfoPopoverContent
                                 className='p-4'
                             >   
-                                Enjoy our services with peace of mind! For a limited time, we're offering a special promotion where the payment charge is excluded from your total spend. Our standard payment charge is 3% of the total amount, plus an additional RM1.<br/>
+                                Enjoy our services with peace of mind! For a limited time, we re offering a special promotion where the payment charge is excluded from your total spend. Our standard payment charge is 3% of the total amount, plus an additional RM1.<br/>
                                 
-                                Please note that this exclusive offer won't last forever, so make the most of it while it lasts. Take advantage of this opportunity to save on your transactions and experience seamless payments.
-
-                                {/* A payment charge of 3% will be applied to your total spend, along with an additional RM1. This fee helps cover processing costs and ensures secure transactions. Please note that the total charge may vary based on your purchase amount.  */}
+                                Please note that this exclusive offer won t last forever, so make the most of it while it lasts. Take advantage of this opportunity to save on your transactions and experience seamless payments.
 
                             </InfoPopoverContent>
                         </Popover>
@@ -214,9 +262,14 @@ const CartList: FC<CartListProps> = ({cartList}) => {
                 >
                     <Button
                         type='button'
-                        disabled={cart.every(cart=>!cart.selected)}
+                        disabled={cart.every(cart=>!cart.selected)||loading}
                         onClick={handleCheckout}
                     >
+                        
+                        <Loader2
+                            className={loading?"flex animate-spin mr-2 ":"hidden"}
+                            size={14}
+                        />
                         Checkout
                     </Button>
 

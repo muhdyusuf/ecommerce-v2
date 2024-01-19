@@ -1,4 +1,4 @@
-import {ChangeEvent, FC} from 'react'
+import {ChangeEvent, FC, useEffect} from 'react'
 import { Button, buttonVariants } from './ui/button'
 
 //ui
@@ -26,10 +26,12 @@ import { Checkbox } from './ui/checkbox'
 interface CartItemProps {
    cartItem:CartItemLocal
    onSelected:(val:boolean)=>void
+   className?:string
 }
 
-const CartItem:FC<CartItemProps>=({cartItem,onSelected=()=>{}})=>{
+const CartItem:FC<CartItemProps>=({className,cartItem,onSelected=()=>{}})=>{
    const {cart,updateItem,removeItem}=useCart()
+   
   
    function handleSetQuantity(val:number){
      updateItem({...cartItem,quantity:val})
@@ -37,11 +39,14 @@ const CartItem:FC<CartItemProps>=({cartItem,onSelected=()=>{}})=>{
    function handleSetSelected(checked:boolean){
       onSelected(checked)
    }
+
+   
      
  return(
 
     <div
-      className='w-full py-4 p-2 grid md:grid-cols-[150px,1fr] grid-cols-[100px,1fr] md:gap-x-6 gap-2 border-b border-black/30'
+      className={cn('w-full py-4 p-2 grid md:grid-cols-[150px,1fr] grid-cols-[100px,1fr] md:gap-x-6 gap-2 border-b border-black/30',
+      className)}
     > 
   
             
@@ -62,6 +67,7 @@ const CartItem:FC<CartItemProps>=({cartItem,onSelected=()=>{}})=>{
          className='flex flex-col justify-between h-full gap-4'
         >
             <div
+               className='flex flex-col gap-2'
             >
                <div
                   className='flex justify-between items-start'
@@ -79,26 +85,37 @@ const CartItem:FC<CartItemProps>=({cartItem,onSelected=()=>{}})=>{
                      onCheckedChange={handleSetSelected}
                   />  
                </div>
-               <p>
-               {cartItem.category}
-               </p> 
-               <p>
-               {cartItem.colour}
-               </p> 
-
+               <ul
+                  className='list-inside capitalize text-sm'
+               >
+                  <li>
+                     category: {cartItem.category}
+                  </li>
+                  <li>
+                     Size : {cartItem.size.toUpperCase()}
+                  </li>
+                  <li>
+                     colour: {cartItem.colour}
+                  </li>
+               </ul>
+              
                <div
-                  className='flex flex-col w-max md:flex-row md:items-center items-start md:gap-2'
-                  >
-                  <p>
-                     size: {cartItem.size}
-                  </p>
+                  className='flex gap-4 items-center'
+               >
                   <QuantityInput
                      onChange={handleSetQuantity}
                      defaultValue={cartItem.quantity}
                      maxValue={cartItem.stock}
                      className='w-32 grid grid-cols-[1fr,2fr,1fr] gap-1 items-center self-end'
                   />
+                  <p
+                     className='text-sm text-muted-foreground'
+                  >
+                     {cartItem.stock} available
+                  </p>
+
                </div>
+             
             </div>
             <AlertDialog>
                <AlertDialogTrigger

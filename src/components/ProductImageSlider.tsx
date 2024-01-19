@@ -133,14 +133,15 @@ const ProductImageSlider: FC<ProductImageSliderProps> = ({images,className,image
 
   return (
     <div
-      className={cn('grid grid-cols-[100px,500px] overflow-hidden',
+      className={cn('flex justify-center overflow-hidden gap-2',
       className)}
     >
     <div
-
+      className='hidden md:grid grid-rows-4 gap-2'
     >
       {images.map((image,index)=>(
         <Image
+          key={`${image}${index}`}
           src={image}
           width={100}
           height={100}
@@ -176,13 +177,13 @@ const ProductImageSlider: FC<ProductImageSliderProps> = ({images,className,image
             src={image}
             className='w-full h-full object-cover'
             />
-            <div
-            className='absolute bottom-0 right-0 m-4 bg-white/80 shadow-md rounded-full p-1 px-2 z-50'
-    >
-      {`${currentIndex+1}/${images.length}`}
-    </div>
         </SwiperSlide>
       ))}
+      <div
+      className='absolute bottom-0 right-0 m-4 bg-white/80 shadow-md rounded-full p-1 px-2 z-50'
+      >
+        {`${currentIndex+1}/${images.length}`}
+      </div>
       
     
     </Swiper>

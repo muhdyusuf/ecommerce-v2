@@ -28,11 +28,7 @@ import ProductImageSlider from './ProductImageSlider'
 import BuyNowButton from './BuyNowButton'
 
 interface ProductCardProps {
- product:Product&{
-    colour:Colour
-    size:Size
-    category:Category
- }
+ product:Product
  className?:string
 }
 

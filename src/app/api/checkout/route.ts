@@ -63,7 +63,7 @@ const corsHeader={
             email:email
         }
     }):null
-    console.log(user)
+  
     
     const createdOrder = await prisma.order.create({
         data: {
@@ -122,7 +122,7 @@ const corsHeader={
                 allowed_countries:["MY"],
                 
             },
-            customer_email:user?.email,
+            customer_email:user?.email??undefined,
             success_url:`${process.env.NEXT_PUBLIC_APP_URL}/checkout?success=1`,
             cancel_url:`${process.env.NEXT_PUBLIC_APP_URL}/checkout?success=0`,
             metadata:{

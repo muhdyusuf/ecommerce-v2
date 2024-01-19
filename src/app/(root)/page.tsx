@@ -11,7 +11,10 @@ export default async function Home() {
   const billboards=await prisma.billboard.findMany()
   const newArrivals=await prisma.product.findMany({
     where:{
-        isArchived:false
+        isArchived:false,
+        stock:{
+          gte:1
+        }
     },
     orderBy:{
         createdAt:"desc"
@@ -41,7 +44,7 @@ export default async function Home() {
         className='md:container flex flex-col gap-4 md:gap-6'
       >
         <h2
-          className='text-xl font-fold'
+          className='text-4xl font-fold font-bold'
         >
           New Arrival
         </h2>

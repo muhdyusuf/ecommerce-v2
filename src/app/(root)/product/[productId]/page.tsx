@@ -35,21 +35,22 @@ const page:FC<pageProps>=async({params})=>{
       className='md:container mb-6'
     >
       <div
-       className='flex md:flex-col w-full justify-center gap-2'
+       className='flex flex-wrap md:justify-center gap-4 relative'
         >
           
-          <ProductImageSlider 
+          <ProductImageSlider
+            className='w-[min(100%,600px)] '
             images={product.imageUrls}
             imageSize={800}  
           />
        
 
           <div
-            className='min-h-full flex flex-col justify-between md:p-8 p-2'
+            className='w-[min(100%,400px)] flex flex-col justify-between md:p-8 p-2 gap-4'
           >
             <div>
               <h2
-                className='text-4xl'
+                className='text-4xl capitalize'
                 >
                 {product.name}
               </h2>
@@ -60,39 +61,34 @@ const page:FC<pageProps>=async({params})=>{
               </h3>
             </div>
 
+            <ProductButtons product={product}/>
+
             <ul
-              className='flex flex-col gap-4'
+              className='flex flex-col gap-4 list-disc list-inside'
             >
               <li>
-
-              <h5>Size</h5>
-              <p>{product.size.name}</p>
+                    Size : {product.size.name.toUpperCase()}
               </li>
               
-
-              <li>
-                <h5>
-                  COLOR
-                </h5>
-                <div
-                  className='rounded-md md:w-8 w-6 h-auto aspect-square outline outline-slate-300 outline-2 outline-offset-2'
-                  style={{
-                    backgroundColor:`${product.colour.value}`
-                  }}
-                  />
+              <li
+                className='capitalize'
+              >
+                  Color : {product.colour.name}
+           
               </li>
              
               
               <li>
-                <h5>
+          
                   Description
-                </h5>
-                <p>
+               
+                <p
+                  className='pl-2'
+                >
                   {product.description}
                 </p>
               </li>
             </ul>
-            <ProductButtons product={product}/>
 
           </div>
       </div>

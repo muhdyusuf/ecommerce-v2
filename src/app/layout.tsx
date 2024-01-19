@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body 
-        className={cn("flex flex-col justify-between gap-6 min-h-screen ",
+        className={cn("flex flex-col justify-between gap-8 min-h-screen ",
         inter.className
         )} 
         suppressHydrationWarning={true}>

@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 
 
 
-const page:FC=({})=>{
+const Page:FC=({})=>{
 
   const [order, setOrder] = useState<OrderCartItemProduct|null|undefined>(undefined)
 
@@ -27,7 +27,7 @@ const page:FC=({})=>{
       Your Order
     </h2>
     <h3>
-      status : {order.status}
+      status : {order.status==="paid"?"To Receive":"delivered"}
     </h3>
     <div
       className='w-[min(100%,600px)]'
@@ -65,7 +65,7 @@ const page:FC=({})=>{
 }
 
 
-export default page
+export default Page
 
 interface PageProp {
   setOrder:(order:OrderCartItemProduct|null|undefined)=>void

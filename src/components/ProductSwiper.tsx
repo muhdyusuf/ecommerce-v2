@@ -6,6 +6,7 @@ import ProductCard from './ProductCard'
 import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { ProductColourSizeCategory } from '@/types/prisma'
 
 
 interface ProductSWiperProps {
@@ -35,7 +36,7 @@ const ProductSWiper:FC<ProductSWiperProps>=({products,className})=>{
         {products.map(product=>(
             <SwiperSlide
             key={product.name+product.id}
-            className='max-w-[200px]'
+            className='max-w-[250px]'
             >
                 <ProductCard
                     product={product}

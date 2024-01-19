@@ -19,10 +19,13 @@ interface QuantityInputProps{
 const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange,className,maxValue}) => {
 
   const [value, setValue] = useState<string>(defaultValue.toString()||"1")
+  useEffect(()=>{
+    setValue(defaultValue.toString())
+  },[defaultValue])
 
   useEffect(()=>{
     onChange(Number(value))
-  },[value])
+  },[value,onChange])
 
   const increment = () => {
     const newValue=Number(value)+1

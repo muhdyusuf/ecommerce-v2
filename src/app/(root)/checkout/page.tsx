@@ -19,7 +19,7 @@ interface pageProps {
 
 
 
-const page: FC<pageProps> = ({searchParams}) => {
+const Page: FC<pageProps> = ({searchParams}) => {
     const {success}=searchParams
     const [secondLeft, setSecondLeft] = useState(5)   
     
@@ -32,7 +32,7 @@ const page: FC<pageProps> = ({searchParams}) => {
             removeItem(item.id)
           }
         })
-        setTimeout(()=>router.replace(`${process.env.NEXT_PUBLIC_APP_URL}`),5000)
+        setTimeout(()=>router.replace(`${process.env.NEXT_PUBLIC_APP_URL}/myAccount`),5000)
       }
       else if(success==="0"){
         setTimeout(()=>router.replace(`${process.env.NEXT_PUBLIC_APP_URL}/cart`),5000)
@@ -53,7 +53,7 @@ const page: FC<pageProps> = ({searchParams}) => {
       }, 1000)
 
       return ()=>clearInterval(intervalId)
-    },[])
+    })
     
     
     
@@ -71,15 +71,15 @@ const page: FC<pageProps> = ({searchParams}) => {
           order confirmed
         </h1>
         <h2>
-          you will be redirected to home in 
+          you will be redirected to my account in 
           <span className='text-primary'>{` ${secondLeft}`}</span>s
         </h2>
         <Link
           className={buttonVariants({variant:"link"})}
-          href={`${process.env.NEXT_PUBLIC_APP_URL}`}
+          href={`${process.env.NEXT_PUBLIC_APP_URL}/myAccount`}
           replace
         >
-          back to home
+          back to my account
         </Link>
         </>):(
         <>
@@ -106,4 +106,4 @@ const page: FC<pageProps> = ({searchParams}) => {
    
 }
 
-export default page
+export default Page

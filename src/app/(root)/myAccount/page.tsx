@@ -15,7 +15,7 @@ interface pageProps {
  
 }
 
-const page:FC<pageProps>=async ({})=>{
+const Page:FC<pageProps>=async ({})=>{
     const sessionUser=await getUserDetails()
     if(!sessionUser)return<Guest/>
 
@@ -30,4 +30,4 @@ const page:FC<pageProps>=async ({})=>{
 
 }
 
-export default page
+export default Page

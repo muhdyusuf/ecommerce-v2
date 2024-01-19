@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description: 'mock e commerce',
 }
 
-const page: FC<pageProps> = async({searchParams,params}) => {
+const Page: FC<pageProps> = async({searchParams,params}) => {
 
 
   return (
@@ -26,4 +26,4 @@ const page: FC<pageProps> = async({searchParams,params}) => {
   )
 }
 
-export default page
+export default Page

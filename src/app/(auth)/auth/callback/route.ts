@@ -17,6 +17,7 @@ export async function GET(request:NextRequest) {
         await supabase.auth.exchangeCodeForSession(code)
 
         const { data: {user} } = await supabase.auth.getUser()
+    
         if(user){
             await prisma.user.upsert({
                 where:{
@@ -25,7 +26,7 @@ export async function GET(request:NextRequest) {
                 update:{},
                 create:{
                     email:user.email!,
-                    username:`user123`,
+                    username:user.user_metadata.user_name,
                 }
             })
         }

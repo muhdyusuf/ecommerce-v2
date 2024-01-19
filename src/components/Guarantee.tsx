@@ -1,4 +1,4 @@
-import { Receipt, Truck, Undo2 } from 'lucide-react'
+import { Headphones, Package, Receipt, Send, Truck, Undo2, Wallet } from 'lucide-react'
 import {FC} from 'react'
 
 interface GuaranteeProps {
@@ -8,38 +8,80 @@ interface GuaranteeProps {
 const Guarantee:FC<GuaranteeProps>=({})=>{
  return(
     <section
-        className='md:container'
+        className='md:container bg-secondary my-6'
     >
        <div
-        className='flex justify-center gap-6'
+        className='grid grid-cols-2 md:grid-cols-4 gap-4 text-sm py-12 p-2'
        >
         <div
-            className='flex flex-col justify-center items-center'
+            className='flex items-center gap-2 md:justify-center'
         >
-            <Truck 
-                size={30}
-                className='stroke-primary w-min'
+            <Send
+                size={36}
+                strokeWidth={1.5}
+                className='h-9 w-auto aspect-square'
             />
-            <p>Free Shipping</p>
+            <div>
+                <h5>
+                    Free Shipping
+                </h5>
+                <p className='text-muted-foreground'>
+                    Order Above Rm1000
+                </p>
+            </div>
         </div>
         <div
-            className='flex flex-col justify-center items-center'
+            className='flex items-center gap-2 md:justify-center'
         >
-            <Undo2 
-                size={30}
-                className='stroke-primary w-min'
+            <Wallet
+                size={36}
+                strokeWidth={1.5}
+                className='h-9 w-auto aspect-square'
             />
-            <p>Free Return</p>
+            <div>
+                <h5>
+                    Money Back Guarantee
+                </h5>
+                <p className='text-muted-foreground'>
+                    Guarantee Within 30 Days                
+                </p>
+            </div>
         </div>
         <div
-            className='flex flex-col justify-center items-center'
+            className='flex items-center gap-2 md:justify-center'
         >
-            <Receipt 
-                size={30}
-                className='stroke-primary w-min'
+            <Package
+                size={36}
+                strokeWidth={1.5}
+                className='h-9 w-auto aspect-square'
             />
-            <p>Best Price</p>
+            <div>
+                <h5>
+                    Easy 30 Day Returns
+                </h5>
+                <p className='text-muted-foreground'>
+                    Back Return in & Days
+                </p>
+            </div>
         </div>
+        <div
+            className='flex items-center gap-2 md:justify-center'
+        >
+            <Headphones
+                size={36}
+                strokeWidth={1.5}
+                className='h-9 w-auto aspect-square'
+            />
+            <div>
+                <h5>
+                    Easy Online Support
+                </h5>
+                <p className='text-muted-foreground'>
+                    Any Time Support
+                </p>
+            </div>
+        </div>
+        
       
        </div>
     </section>
