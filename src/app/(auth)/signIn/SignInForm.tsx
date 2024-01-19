@@ -1,13 +1,12 @@
 "use client"
-import { Input } from '@/components/ui/input'
+
 import {FC, useState} from 'react'
 import { Button } from '../../../components/ui/button'
-import { signInSchema } from '@/lib/validations/authForm'
 
-import {z} from 'Zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Eye, EyeOff, Github, Loader, Loader2 } from 'lucide-react'
+
+
+
+import {Github,Loader2 } from 'lucide-react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 interface SignUpFormProps {
