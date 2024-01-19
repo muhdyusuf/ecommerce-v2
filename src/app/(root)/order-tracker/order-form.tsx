@@ -7,9 +7,12 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
+import { trackOrder } from '@/actions/order'
+import { OrderCartItemProduct } from '@/types/prisma'
+import { Loader2 } from 'lucide-react'
 
 interface OrderTrackerForm {
- 
+  setOrder:(order:OrderCartItemProduct|undefined|null)=>void
 }
 const OrderTrackerSchema=z.object({
     orderId:z.preprocess(
@@ -21,7 +24,7 @@ const OrderTrackerSchema=z.object({
 
 type IOrderTrackerForm=z.infer<typeof OrderTrackerSchema>
 
-const OrderTrackerForm:FC<OrderTrackerForm>=({})=>{
+const OrderTrackerForm:FC<OrderTrackerForm>=({setOrder})=>{
 
     const [loading, setLoading] = useState(false)
 
@@ -35,8 +38,12 @@ const OrderTrackerForm:FC<OrderTrackerForm>=({})=>{
    
       })
 
-    function onSubmit(data:OrderTrackerForm){
-
+    async function onSubmit(data:IOrderTrackerForm){
+      setLoading(true)
+      const order=await trackOrder(data.orderId,data.email)
+      console.log(order)
+      setLoading(false)
+      setOrder(order)
     } 
 
 
@@ -78,7 +85,14 @@ const OrderTrackerForm:FC<OrderTrackerForm>=({})=>{
           />
       
 
-          <Button>
+          <Button
+            disabled={loading}
+          >
+            <Loader2
+              size={"1rem"}
+              className={`${loading?"block":"hidden"} animate-spin stroke-muted-foreground mr-1`}
+
+            />
             Track
           </Button>
         
