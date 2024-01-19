@@ -1,7 +1,7 @@
 'use client'
 import { FC,useEffect,useState} from 'react'
-import { useForm } from 'react-hook-form';
-import { z } from "Zod";
+
+import { z } from "zod";
 import { Input } from './ui/input';
 import { cn } from '@/lib/utils';
 import {Search,X} from 'lucide-react'

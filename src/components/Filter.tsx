@@ -1,7 +1,7 @@
 'use client'
 import {useRouter,useSearchParams,usePathname} from 'next/navigation'
 import { FC} from 'react'
-import { z } from "Zod";
+import { z } from "zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 

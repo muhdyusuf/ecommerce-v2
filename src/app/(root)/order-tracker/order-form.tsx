@@ -2,7 +2,7 @@
 import { Input } from '@/components/ui/input'
 import {FC, useState} from 'react'
 
-import {z} from 'Zod'
+import {z} from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'

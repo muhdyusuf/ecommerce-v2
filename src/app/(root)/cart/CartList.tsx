@@ -12,6 +12,7 @@ import { PRICE_MULTIPLIER, formatPrice } from '@/lib/utils'
 import { Link, Loader2, ShoppingBag } from 'lucide-react'
 import {FC, SyntheticEvent, useEffect, useMemo, useState} from 'react'
 import CartItem from './CartItem'
+import { useToast } from '@/components/ui/use-toast'
 
 interface CartListProps {
  
@@ -21,6 +22,7 @@ const CartList:FC<CartListProps>=({})=>{
     const [isMounted, setIsMounted] = useState(false)
     const [loading,setLoading]=useState(false)
     const [updatedId, setUpdatedId] = useState<number[]>([])
+    const {toast}=useToast()
 
     useEffect(()=>{
         setIsMounted(true)
