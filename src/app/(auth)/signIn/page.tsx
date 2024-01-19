@@ -20,15 +20,6 @@ const page: FC<pageProps> = ({searchParams}) => {
 
   return (
    <>
-        <Link
-          href="/signUp"
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            "absolute right-4 top-4 md:right-8 md:top-8"
-          )}
-        >
-          Sign Up
-        </Link>
 
         <div className="lg:p-8 w-[min(100%,400px)]">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6">
