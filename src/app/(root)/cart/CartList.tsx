@@ -30,6 +30,7 @@ const CartList:FC<CartListProps>=({})=>{
 
     const {cart,updateItem,removeItem,selectAll,unSelectAll}=useCart()
     const isAllSelected=useMemo(()=>cart.every(item=>item.selected), [cart])
+    const isOneSelected=useMemo(()=>cart.some(item=>item.selected), [cart])
 
     const total=useMemo(()=>cart.reduce((total,cartItem)=>{
         if(!cartItem.selected)return total
@@ -73,7 +74,7 @@ const CartList:FC<CartListProps>=({})=>{
         return
     }
 
-    const response=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/checkout`,{
+    const response=await fetch(`${process.env.NEXT_PUBLIC_ADMIN_URL}/api/checkout`,{
         method:"POST",
         body:JSON.stringify({
             cartItems:cart.filter(item=>item.selected).map(({id,quantity})=>({id,quantity:quantity||1})),
@@ -151,6 +152,7 @@ const CartList:FC<CartListProps>=({})=>{
                             key={"cartItem"+cartItem.id}
                             cartItem={cartItem}
                             onCheckedChange={(val)=>updateItem({...cartItem,selected:val})}
+                            className={`${updatedId.includes(cartItem.id)&&"bg-orange-50"}`}
                         
                         />
                     ))}
@@ -223,7 +225,7 @@ const CartList:FC<CartListProps>=({})=>{
                 >
                     <Button
                         type='button'
-                        disabled={isAllSelected||loading}
+                        disabled={!isOneSelected||loading}
                         onClick={handleCheckout}
                     >
                         
