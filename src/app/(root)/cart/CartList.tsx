@@ -76,6 +76,7 @@ const CartList:FC<CartListProps>=({})=>{
 
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_ADMIN_URL}/api/checkout`, {
+            mode:'cors',
             method: "POST",
             headers: {
               "Content-Type": "application/json",
