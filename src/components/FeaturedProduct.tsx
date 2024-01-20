@@ -28,7 +28,7 @@ const FeaturedProduct:FC<FeaturedProductProps>=async({className,productId})=>{
         className={cn("bg-secondary my-8",className)}
       >
         <div
-          className='md:container flex flex-col py-10 md:gap-8 gap-4'
+          className='p-4 md:container flex flex-col py-10 md:gap-8 gap-4'
           >
             <div
               className='flex flex-col justify-center items-center gap-4'
@@ -39,7 +39,7 @@ const FeaturedProduct:FC<FeaturedProductProps>=async({className,productId})=>{
                 Featured
               </h2>
               <p
-                className='w-[min(100%,600px)] text-center'
+                className='w-[min(100%,600px)] text-center hidden md:block'
               >
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.Minus iure voluptates ab laudantium soluta vitae natus reprehenderit blanditiis dolorum nam!
               </p>

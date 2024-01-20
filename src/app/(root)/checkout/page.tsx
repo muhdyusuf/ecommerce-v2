@@ -53,7 +53,7 @@ const Page: FC<pageProps> = ({searchParams}) => {
       }, 1000)
 
       return ()=>clearInterval(intervalId)
-    })
+    },[])
     
     
     

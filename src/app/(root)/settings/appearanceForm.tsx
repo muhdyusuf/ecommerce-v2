@@ -20,6 +20,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { toast } from "@/components/ui/use-toast"
 import { useTheme } from "next-themes"
 import {z} from "zod"
+import { useEffect, useState } from "react"
 
 
 const appearanceFormSchema = z.object({
@@ -36,6 +37,7 @@ type AppearanceFormValues = z.infer<typeof appearanceFormSchema>
 
 export function AppearanceForm() {
   const {setTheme,theme}=useTheme()
+  const [isMounted, setisMounted] = useState(false)
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
     defaultValues:{
@@ -46,6 +48,13 @@ export function AppearanceForm() {
   function onSubmit(data: AppearanceFormValues) {
     setTheme(data.theme)
   }
+
+  useEffect(()=>{
+    setisMounted(true)
+  },[])
+
+  if(!isMounted)return<div className="min-h-full"/>
+  
 
   return (
     <Form {...form}>

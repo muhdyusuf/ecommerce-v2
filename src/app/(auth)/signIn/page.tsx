@@ -22,18 +22,21 @@ const page: FC<pageProps> = ({searchParams}) => {
    <>
 
         <div className="lg:p-8 w-[min(100%,400px)]">
-          <div className="mx-auto flex w-full flex-col justify-center space-y-6">
-            <div className="flex flex-col space-y-2 text-center">
+          <div className="mx-auto flex w-full flex-col justify-center gap-8">
+            <div className="flex flex-col text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
                 Login
               </h1>
-              {/* <p className="text-sm text-muted-foreground">
-                Enter your email below to continue
-              </p> */}
+              <p
+                className='text-muted-foreground font-medium'
+              >
+                login to enjoy more feature
+              </p>
+             
             </div>
             <SignInForm redirectTo={searchParams.next}/>
             
-            <p className="pt-8 text-center text-sm text-muted-foreground">
+            <p className="text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link
                 href="/terms"

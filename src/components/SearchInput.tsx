@@ -44,7 +44,7 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
 
   return (
     <form
-        className='w-[min(100%,400px)] bg-slate-200 flex
+        className='w-[min(100%,400px)] bg-secondary flex
         rounded-md justify-between'
         onSubmit={onSubmit}
     >
@@ -56,7 +56,7 @@ const SearchInput: FC<SearchInputProps> = ({}) => {
                 type="text"
                 id='searchbox'
                 placeholder='Search..' 
-                className={cn("bg-transparent py-0 m-0 peer/searchInput focus:border-offset-0")}
+                className={cn("bg-transparent py-0 m-0 peer/searchInput focus:border-offset-0 border-none")}
                 minLength={3}
                 required
                 onChange={(e)=>setInputValue(e.target.value)}

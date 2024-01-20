@@ -3,7 +3,7 @@ import { AppearanceForm } from "./appearanceForm"
 
 export default function SettingsAppearancePage() {
   return (
-    <main className="md:container flex flex-col gap-4">
+    <main className="p-4 md:container flex flex-col gap-4 item self-stretch">
       <div>
         <h3 className="text-lg font-medium">Appearance</h3>
         <p className="text-sm text-muted-foreground">

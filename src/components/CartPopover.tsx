@@ -37,49 +37,60 @@ const CartPopover: FC<CartProps> = ({}) => {
     </Button>
   ):(
    <>
-    <Link
-        href={"/cart"}
-        className={cn(
-            buttonVariants({variant:"ghost"}),
-            `hover:bg-slate-100/10 m-0 p-1 relative md:hidden`
-
-        )}
-    >
-
-        <span
-            className='empty:hidden absolute bg-primary text-white top-0 right-0 rounded-md h-4 aspect-square overflow-hidden leading-none text-center p-1 text-[.8rem] grid place-content-center'
+   <div
+    className='relative md:hidden'
+   >
+        <div
+            className='empty:hidden absolute bg-primary text-white top-0 right-0 text-[.6rem] h-4 w-auto aspect-square rounded-full grid place-content-center dark:text-black font-bold'
             >
             {cart.length>0?cart.length:null}
-        </span>
-        <ShoppingBag
-            strokeWidth={2}
-            className='w-6 h-auto aspect-square'
-            />
-        
-    </Link>
+        </div>
+        <Link
+            href={"/cart"}
+            className={cn(
+                buttonVariants({variant:"ghost"}),
+                `hover:bg-slate-100/10 m-0 p-1`
+
+                )}
+                >
+
+            <ShoppingBag
+                strokeWidth={2}
+                className='w-6 h-auto aspect-square'
+                />
+            
+        </Link>
+    </div>
     <Popover>
         <PopoverTrigger
             className='hidden md:block'
             asChild
         >
-
             <Button
-                aria-label="cart-button-open-popover"
-                className={cn(`hover:bg-slate-100/10 m-0 p-1 relative`)}
-                variant={"ghost"}
-                >
-        
-                <span
-                    className='empty:hidden absolute bg-primary text-white top-0 right-0 rounded-md h-4 aspect-square overflow-hidden leading-none text-center p-1 text-[.8rem] grid place-content-center'
-                    >
-                    {cart.length>0?cart.length:null}
-                </span>
-                <ShoppingBag
-                    strokeWidth={2}
-                    className='w-6 h-auto aspect-square'
-                    />
-                
-            </Button>
+                variant={"link"}
+                className='relative hidden md:flex p-0'
+            >
+                    <div
+                        className='empty:hidden absolute bg-primary text-white top-0 right-0 text-[.6rem] h-4 w-auto aspect-square rounded-full grid place-content-center dark:text-black font-bold'
+                        >
+                        {cart.length>0?cart.length:null}
+                    </div>
+                    <Link
+                        href={"/cart"}
+                        className={cn(
+                            buttonVariants({variant:"ghost"}),
+                            `hover:bg-slate-100/10 m-0 p-1`
+
+                            )}
+                            >
+
+                        <ShoppingBag
+                            strokeWidth={2}
+                            className='w-6 h-auto aspect-square'
+                            />
+                        
+                    </Link>
+                </Button>
         </PopoverTrigger>
         <PopoverContent
             className='shadow-md bg-background p-4 rounded-md flex flex-col gap-2'

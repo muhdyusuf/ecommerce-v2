@@ -54,16 +54,20 @@ const OrderTrackerForm:FC<OrderTrackerForm>=({setOrder})=>{
         >
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='flex flex-col gap-4 w-[min(100%,400px)]'
+          className='flex flex-col gap-2 w-[min(100%,400px)]'
           >
     
           <FormField
             control={form.control}
             name="orderId"
             render={({field}) => (
-              <FormItem>
+              <FormItem
+                className='space-y-0'
+              >
                 <FormLabel>Order Id</FormLabel>
-                <FormControl>
+                <FormControl
+                  className='whitespace-nowrap'
+                >
                   <Input placeholder="Enter Order Id" {...field}  />
                 </FormControl>
                 <FormMessage />
@@ -74,7 +78,9 @@ const OrderTrackerForm:FC<OrderTrackerForm>=({setOrder})=>{
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem>
+              <FormItem
+                className='space-y-0'
+              >
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter Email Address" {...field}/>
@@ -87,6 +93,7 @@ const OrderTrackerForm:FC<OrderTrackerForm>=({setOrder})=>{
 
           <Button
             disabled={loading}
+            className='mt-4'
           >
             <Loader2
               size={"1rem"}

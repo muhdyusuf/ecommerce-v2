@@ -58,22 +58,40 @@ const HamburgerMenu:FC<HamburgerMenuProps>=({})=>{
             </SheetClose>
         </SheetHeader>
   
-            <ul>
+            <ul
+                className='flex flex-col gap-4'
+            >
                 <li>
-                <Link
-                    href={"/"}
-                    onClick={handleClose}
-                    >
-                    Home
-                </Link>
+                    <Link
+                        href={"/"}
+                        onClick={handleClose}
+                        >
+                        Home
+                    </Link>
                 </li>
                 <li>
-                <Link
-                    href={"/cart"}
-                    onClick={handleClose}
-                >
-                    Cart
-                </Link>
+                    <Link
+                        href={"/cart"}
+                        onClick={handleClose}
+                    >
+                        Cart
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        href={"/order-tracker"}
+                        onClick={handleClose}
+                    >
+                        Track Order
+                    </Link>
+                </li>
+                <li>
+                    <Link
+                        href={"/settings"}
+                        onClick={handleClose}
+                    >
+                        Setting
+                    </Link>
                 </li>
 
          

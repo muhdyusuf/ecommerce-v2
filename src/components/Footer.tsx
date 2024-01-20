@@ -12,7 +12,7 @@ const Footer: FC<FooterProps> = ({}) => {
     className='text-sm bg-secondary py-6 w-full self-end'
    >
      <div
-        className='md:container flex flex-wrap justify-between gap-4 py-4 p-1'
+        className='p-4 md:container flex flex-wrap justify-between gap-8 py-4'
      >
         <div
             className='w-64 flex flex-col gap-2'

@@ -1,31 +1,26 @@
-import {FC, Suspense} from 'react'
+import {FC} from 'react'
 
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card"
+
 import {
     Dialog,
     DialogClose,
     DialogContent,
-    DialogDescription,
     DialogFooter,
-    DialogHeader,
-    DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
-  import { Button, buttonVariants } from './ui/button'
+
 
   import { cn, formatPrice } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Category, Colour, Product, Size } from '@prisma/client'
+import { Product} from '@prisma/client'
 import ProductImageSlider from './ProductImageSlider'
-import BuyNowButton from './BuyNowButton'
+
 
 interface ProductCardProps {
  product:Product
@@ -37,7 +32,7 @@ const ProductCard:FC<ProductCardProps>=({product,className})=>{
    <Dialog>
     <Card
      className={cn(
-         "p-2 rounded-md shadow-none",
+         "p-2 rounded-md shadow-none dark:border-none",
          className
          )}
          >
