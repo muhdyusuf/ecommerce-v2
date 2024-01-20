@@ -30,6 +30,7 @@ const CartList:FC<CartListProps>=({})=>{
 
     const {cart,updateItem,removeItem,selectAll,unSelectAll}=useCart()
     const isAllSelected=useMemo(()=>cart.every(item=>item.selected), [cart])
+    const isOneSelected=useMemo(()=>cart.some(item=>item.selected), [cart])
 
     const total=useMemo(()=>cart.reduce((total,cartItem)=>{
         if(!cartItem.selected)return total
@@ -223,7 +224,7 @@ const CartList:FC<CartListProps>=({})=>{
                 >
                     <Button
                         type='button'
-                        disabled={isAllSelected||loading}
+                        disabled={!isOneSelected||loading}
                         onClick={handleCheckout}
                     >
                         
