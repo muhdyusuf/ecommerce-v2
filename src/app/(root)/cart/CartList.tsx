@@ -74,19 +74,28 @@ const CartList:FC<CartListProps>=({})=>{
         return
     }
 
-    const response=await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/checkout`,{
-        method:"POST",
-        body:JSON.stringify({
-            cartItems:cart.filter(item=>item.selected).map(({id,quantity})=>({id,quantity:quantity||1})),
-            email:user?.email
-    })
-    })
-    
-    if(response.status===200){
-        setLoading(false)
-        const {url}=await response.json()
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_ADMIN_URL}/api/checkout`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          body: JSON.stringify({
+            cartItems: cart.filter(item => item.selected).map(({ id, quantity }) => ({ id, quantity: quantity || 1 })),
+            email: user?.email,
+          }),
+        });
+
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+      
+        const{url} = await response.json();
         window.location=url
-    }
+      } catch (error) {
+        
+      }
     }
 
     return !isMounted?(
