@@ -20,6 +20,11 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange
 
   const [value, setValue] = useState<string>(defaultValue.toString()||"1")
  
+  useEffect(()=>{
+    if(Number(value)>maxValue){
+      setValue(maxValue.toString())
+    }
+  },[maxValue,value])
 
   
 
@@ -53,11 +58,16 @@ const QuantityInput: FC<QuantityInputProps> = ({children,defaultValue=1,onChange
 
   const handleInputChange = (e:ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
+   
   }
 
   const handleOnBlur = (e:ChangeEvent<HTMLInputElement>) => {
    const newValue=Number(e.target.value)
-   if(newValue&&newValue<=maxValue)return
+   
+   if(newValue&&newValue<=maxValue){
+    onChange(newValue)
+    return
+   }
 
     if(newValue&&newValue>maxValue){
       setValue(maxValue.toString())

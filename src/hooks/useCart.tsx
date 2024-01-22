@@ -33,11 +33,18 @@ const useCart = create(
         cart:[],
         addItem:(data:CartItemLocal)=>{
            const currentItems=get().cart
-           const existingItems=currentItems.findIndex(item=>item.id===data.id)
+           const itemIndex=currentItems.findIndex(item=>item.id===data.id)
            
-           if(existingItems>=0){
-            currentItems[existingItems].quantity+=data.quantity
-            currentItems[existingItems].selected=true
+           if(itemIndex>=0){
+            const cartItem=currentItems[itemIndex]
+            const total=cartItem.quantity+data.quantity
+            if(total<=cartItem.quantity){
+                currentItems[itemIndex].quantity=total
+            }
+            else{
+                currentItems[itemIndex].quantity=cartItem.stock
+            }
+            currentItems[itemIndex].selected=true
             set({cart:currentItems})
            }
            else{

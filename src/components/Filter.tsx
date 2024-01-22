@@ -6,7 +6,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from './ui/button';
-import qs from 'querystring'
+import qs from 'querystring';
 import PriceRangeInput from './PriceRangeInput';
 import RatingInput from './RatingInput';
 
@@ -38,7 +38,7 @@ const Filter: FC<FilterProps> = ({close=()=>{}}) => {
     const router=useRouter()
     const searchParams=useSearchParams()
     const url=process.env.NEXT_PUBLIC_APP_URL
-
+  
     
    
     let urlFilterQuery

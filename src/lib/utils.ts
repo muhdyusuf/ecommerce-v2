@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx"
+import { Url } from "next/dist/shared/lib/router/router"
 import { twMerge } from "tailwind-merge"
  
 export function cn(...inputs: ClassValue[]) {
@@ -25,5 +26,9 @@ export function formatPrice(
     maximumFractionDigits:2
   }).format(price)
 
+}
+
+function getFilterFromUrl(url:Url){
+  
 }
 

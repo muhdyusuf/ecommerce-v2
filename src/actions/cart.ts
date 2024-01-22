@@ -4,7 +4,7 @@
 import prisma from "../../prisma/client";
 
 
-export async function validateLocalCartItems(cartList:{id:number,quantity:number}[]) {
+export async function validateLocalCartItems(cartList:{id:number,quantity:number,price:number}[]) {
     const products=await prisma.product.findMany({
         where:{
             id:{
@@ -19,7 +19,8 @@ export async function validateLocalCartItems(cartList:{id:number,quantity:number
         if(product)return {
             ...cartItem,
             quantity:cartItem.quantity>product.stock?product.stock:cartItem.quantity<1?1:cartItem.quantity,
-            stock:product.stock
+            stock:product.stock,
+            price:product.price
         }
     }).filter(item=>item)
     
