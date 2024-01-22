@@ -38,7 +38,7 @@ const CartPopover: FC<CartProps> = ({}) => {
   ):(
    <>
    <div
-    className='relative md:hidden'
+    className='relative block md:hidden'
    >
         <div
             className='empty:hidden absolute bg-primary text-white top-0 right-0 text-[.6rem] h-4 w-auto aspect-square rounded-full grid place-content-center dark:text-black font-bold'
@@ -75,21 +75,12 @@ const CartPopover: FC<CartProps> = ({}) => {
                         >
                         {cart.length>0?cart.length:null}
                     </div>
-                    <Link
-                        href={"/cart"}
-                        className={cn(
-                            buttonVariants({variant:"ghost"}),
-                            `hover:bg-slate-100/10 m-0 p-1`
-
-                            )}
-                            >
-
-                        <ShoppingBag
-                            strokeWidth={2}
-                            className='w-6 h-auto aspect-square'
-                            />
-                        
-                    </Link>
+               
+                    <ShoppingBag
+                        strokeWidth={2}
+                        className='w-6 h-auto aspect-square'
+                    />
+                
                 </Button>
         </PopoverTrigger>
         <PopoverContent
