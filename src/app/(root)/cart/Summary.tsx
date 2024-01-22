@@ -49,7 +49,7 @@ const Summary:FC<SummaryProps>=({setUpdatedId,className})=>{
             if(!product){
                 removeItem(cartItem.id)
             }
-            else if(product.quantity!==cartItem.quantity){
+            else if(product.quantity!==cartItem.quantity||cartItem.price!==product.price){
                 updateItem({...product,...cartItem})
                 _updatedId.push(product.id)
             }
@@ -59,6 +59,7 @@ const Summary:FC<SummaryProps>=({setUpdatedId,className})=>{
             toast({
                 title:'some item have been updated'
             })
+            
             setLoading(false)
             return
         }

@@ -35,9 +35,7 @@ const CartItem:FC<CartItemProps>=({className,cartItem,onCheckedChange})=>{
    function handleSetQuantity(val:number){
      updateItem({...cartItem,quantity:val})
    }
-   
 
-   
      
  return(
 

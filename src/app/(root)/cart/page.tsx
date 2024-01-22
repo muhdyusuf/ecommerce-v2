@@ -20,6 +20,14 @@ const Page: FC<pageProps> = ({}) => {
    const [updatedId, setupdatedId] = useState<number[]>([])
    const [isMounted, setIsMounted] = useState(false)
 
+   useEffect(()=>{
+    if(updatedId.length===0)return
+    const timer=setTimeout(()=>setupdatedId([]),5000)
+    return ()=>{
+      clearTimeout(timer)
+    }
+   },[updatedId])
+
    const {cart}=useCart()
 
    useEffect(()=>{
