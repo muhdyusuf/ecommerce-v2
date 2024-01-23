@@ -34,10 +34,10 @@ const SignInForm:FC<SignUpFormProps>=({redirectTo})=>{
                 }         
             })
        
-            console.log(data,"signInForm")
+
             
         } catch (error) {
-            console.log(error)    
+            
         } finally{
             setisLoading(false)
         }
@@ -57,7 +57,7 @@ const SignInForm:FC<SignUpFormProps>=({redirectTo})=>{
             console.log(data,"signInForm")
             
         } catch (error) {
-            console.log(error)    
+           
         } finally{
             setisLoading(false)
         }
