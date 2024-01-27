@@ -15,10 +15,13 @@ interface pageProps {
 
 const page:FC<pageProps>=async({params})=>{
   const {productId}=params
-  if(!productId)throw new Error('Invalid Product Id')
+  if(!productId||isNaN(Number(productId)))throw new Error('Invalid Product Id')
   const product=await prisma.product.findUnique({
     where:{
-      id:Number(productId)
+      id:Number(productId),
+      stock:{
+        gte:1
+      }
     },
     include:{
       rating:true,
@@ -27,7 +30,7 @@ const page:FC<pageProps>=async({params})=>{
       category:true
     }
   })
-  if(!product)throw new Error('Product not exist')
+  if(!product)throw new Error('Product not exist or sold')
   
  return(
     <>
@@ -60,8 +63,9 @@ const page:FC<pageProps>=async({params})=>{
                 {formatPrice(product.price)}
               </h3>
             </div>
-
-            <ProductButtons product={product}/>
+       
+              <ProductButtons product={product}/>
+            
 
             <ul
               className='flex flex-col gap-4 list-disc list-inside'

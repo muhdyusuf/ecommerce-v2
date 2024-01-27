@@ -133,8 +133,8 @@ const Footer: FC<FooterProps> = ({}) => {
 
      </div>
     <div
-            className='w-full md:container'
-        >
+            className='w-full p-4 md:container'
+    >
         <p>
             &copy;2023 MockECommerce, Inc. All right reserved
         </p>

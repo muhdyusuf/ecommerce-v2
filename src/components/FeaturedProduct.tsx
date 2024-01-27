@@ -28,7 +28,7 @@ const FeaturedProduct:FC<FeaturedProductProps>=async({className,productId})=>{
         className={cn("bg-secondary my-8",className)}
       >
         <div
-          className='p-4 md:container flex flex-col py-10 md:gap-8 gap-4'
+          className='p-2 md:container flex flex-col py-10 md:gap-8 gap-4'
           >
             <div
               className='flex flex-col justify-center items-center gap-4'

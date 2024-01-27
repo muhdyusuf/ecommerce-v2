@@ -41,7 +41,7 @@ export default async function Home() {
     <Guarantee/>
     <section>
       <div
-        className='p-4 md:container flex flex-col gap-4 md:gap-6'
+        className='p-2 md:container flex flex-col gap-4 md:gap-6'
       >
         <h2
           className='text-4xl font-fold font-bold'

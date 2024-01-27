@@ -45,7 +45,7 @@ const Page: FC<pageProps> = ({}) => {
     </main>
   ):cart.length===0?(
       <main
-        className='p-1 md:container'
+        className='p-2 md:container'
       >
         <div
         className='outline-dashed outline-6 outline-secondary rounded-md w-full aspect-video flex flex-col justify-center items-center text-center'
@@ -70,7 +70,7 @@ const Page: FC<pageProps> = ({}) => {
       </main>
       ):(
       <main
-        className='min-h-[calc(100vh-3rem)] grid grid-cols-1 md:grid-cols-[2fr,1fr] justify-items-center md:container gap-4 relative'
+        className='grid grid-cols-1 md:grid-cols-[2fr,1fr] justify-items-center md:container gap-4 relative'
         >
           <>
           <CartList

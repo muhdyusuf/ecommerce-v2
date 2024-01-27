@@ -9,7 +9,7 @@ import {
     SheetTitle,
     SheetTrigger,
   } from "@/components/ui/sheet"
-import { Menu, X } from 'lucide-react'
+import { AlignJustify, Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from './ui/button'
 
@@ -31,7 +31,11 @@ const HamburgerMenu:FC<HamburgerMenuProps>=({})=>{
         className='flex md:hidden'
         asChild
     >
-        <Menu />
+        <AlignJustify
+            className='p-0 w-8 h-auto aspect-square'
+            strokeWidth={2.5}
+            
+        />
     </SheetTrigger>
 
     <SheetContent
@@ -47,12 +51,11 @@ const HamburgerMenu:FC<HamburgerMenuProps>=({})=>{
             >
                 <Button
                     variant={"outline"}
-                    className='p-1 h-min'
+                    className='h-min p-0'
                 >
                     <X
                         className='stroke-foreground'
-                        size={14}
-                        strokeWidth={4}
+
                     />
                 </Button>
             </SheetClose>

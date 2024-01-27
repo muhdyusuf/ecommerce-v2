@@ -26,7 +26,7 @@ const CartList:FC<CartListProps>=({updatedId})=>{
             >  
 
                 <h2
-                    className='text-4xl font-bold leading-none'
+                    className='px-2 text-4xl font-bold leading-none'
                 >
                     Bag
                 </h2>

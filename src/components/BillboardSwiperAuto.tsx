@@ -41,15 +41,6 @@ const BillboardSwiperAuto: FC<BillboardSwiperAutoProps> = ({
               alt={billboard.label}
               className='absolute top-0 right-0 -z-10 w-full h-full object-cover'
             />
-            <div
-              className='w-full h-full flex justify-center items-center'
-            >
-              <p
-                className='text-4xl font-bold text-primary whitespace-pre-line'
-              >
-                {billboard.label}
-              </p>
-            </div>
           </SwiperSlide>
         ))
       }
