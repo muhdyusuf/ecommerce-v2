@@ -45,7 +45,7 @@ const ProductSWiper:FC<ProductSWiperProps>=({products,className})=>{
         ))}
         <Button
             type='button'
-            className='absolute top-0 bottom-0 left-2 m-auto z-50 p-0 w-10 h-auto aspect-square rounded-full invisible group-hover/swiper:visible'
+            className='absolute top-0 bottom-0 left-2 m-auto z-50 p-0 w-10 h-min aspect-square rounded-full invisible group-hover/swiper:visible'
             onClick={()=>swiperRef.current?.swiper.slidePrev()}
             //todo:fix disable
             // disabled={isBeginning}
@@ -56,7 +56,7 @@ const ProductSWiper:FC<ProductSWiperProps>=({products,className})=>{
         </Button>
         <Button
             type='button'
-            className='absolute top-0 bottom-0 right-2 m-auto z-50 p-0 w-10 h-auto aspect-square rounded-full invisible group-hover/swiper:visible'
+            className='absolute top-0 bottom-0 right-2 m-auto z-50 p-0 w-10 h-min aspect-square rounded-full invisible group-hover/swiper:visible'
             onClick={()=>swiperRef.current?.swiper.slideNext()}
             //todo:fix disable
             // disabled={isEnd}

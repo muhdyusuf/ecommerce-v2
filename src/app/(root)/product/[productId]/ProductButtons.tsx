@@ -48,7 +48,7 @@ const ProductButtons: FC<ProductButtonsProps> = ({product}) => {
     async function handleAddToCart(){
        addItem(formattedCart)
        toast({
-        title:`Item Added to your car`,
+        title:`Item Added to your cart`,
        })
     }
     function handleQuantity(val:number){
