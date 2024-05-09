@@ -93,7 +93,8 @@
 ## Roadmap
 
 - [ ] Refactor filter component
-    - [ ] add category filtering
+- [ ] add category filtering
+- [ ] change image caraousel form swiper js to shad cn ui carousel component
 
 
 See the [open issues](https://github.com/muhdyusuf/ecommerce-v2/issues) for a full list of proposed features (and known issues).
