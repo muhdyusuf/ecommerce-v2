@@ -4,8 +4,8 @@ import ProductImageSlider from '@/components/ProductImageSlider'
 import FeaturedProduct from '@/components/FeaturedProduct'
 import { formatPrice } from '@/lib/utils'
 import ProductButtons from '@/app/(root)/product/[productId]/ProductButtons'
-import { NextResponse } from 'next/server'
-import { redirect } from 'next/dist/server/api-utils'
+import HistoryBackButton from '@/components/HistoryBackButton'
+
 
 interface pageProps {
  params:{
@@ -15,7 +15,18 @@ interface pageProps {
 
 const page:FC<pageProps>=async({params})=>{
   const {productId}=params
-  if(!productId||isNaN(Number(productId)))throw new Error('Invalid Product Id')
+  if(!productId||isNaN(Number(productId)))return(
+    <main
+      className='flex justify-center items-center'
+    >
+      <h6>
+        Invalid Product
+      </h6>
+      <HistoryBackButton/>
+
+      
+    </main>
+  )
   const product=await prisma.product.findUnique({
     where:{
       id:Number(productId),
@@ -30,7 +41,19 @@ const page:FC<pageProps>=async({params})=>{
       category:true
     }
   })
-  if(!product)throw new Error('Product not exist or sold')
+
+  if(!product)return(
+    <main
+    className='flex flex-col justify-center items-center'
+  >
+    <h6>
+      Invalid Product
+    </h6>
+    <HistoryBackButton/>
+
+    
+  </main>
+  )
   
  return(
     <>
